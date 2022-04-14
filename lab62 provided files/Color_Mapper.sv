@@ -13,10 +13,10 @@
 //-------------------------------------------------------------------------
 
 
-module  color_mapper ( input        [9:0] BallX, BallY, DrawX, DrawY, Ball_size,
+module  color_mapper ( input        [9:0] BallX, BallY, DrawX, DrawY, Ball_sizeX, Ball_sizeY, AlienX, AlienY,
                        output logic [7:0]  Red, Green, Blue );
     
-    logic ball_on;
+    logic ship_on,alien_on;
 	 
  /* Old Ball: Generated square box by checking if the current pixel is within a square of length
     2*Ball_Size, centered at (BallX, BallY).  Note that this requires unsigned comparisons.
@@ -31,27 +31,51 @@ module  color_mapper ( input        [9:0] BallX, BallY, DrawX, DrawY, Ball_size,
      of the 12 available multipliers on the chip!  Since the multiplicants are required to be signed,
 	  we have to first cast them from logic to int (signed by default) before they are multiplied). */
 	  
-    int DistX, DistY, Size;
+    int DistX, DistY, SizeX,SizeY;
 	 assign DistX = DrawX - BallX;
     assign DistY = DrawY - BallY;
-    assign Size = Ball_size;
+    assign SizeX = Ball_sizeX;
+	 assign SizeY = Ball_sizeY;
+	 
+	 int DistX1, DistY1, SizeX1, SizeY1;
+	 assign DistX1 = DrawX - AlienX;
+    assign DistY1 = DrawY - AlienY;
+    assign SizeX1 = Ball_sizeX;
+	 assign SizeY1 = Ball_sizeY;
+       
 	  
     always_comb
-    begin:Ball_on_proc
-        if ( ( DistX*DistX + DistY*DistY) <= (Size * Size) ) 
-            ball_on = 1'b1;
+    begin:Ship_on_proc
+        //if ( ( DistX*DistX + DistY*DistY) <= (Size * Size) ) //ball
+		  if(DistX>=0 && DistX<=SizeX &&DistY>=0&&DistY<=SizeY)  //square
+            ship_on = 1'b1; 
         else 
-            ball_on = 1'b0;
+            ship_on = 1'b0;
      end 
-       
-    always_comb
+	  
+	always_comb
+	begin	:Alien_on_proc
+	 //if ( ( DistX1*DistX1 + DistY1*DistY1) <= (Size1 * Size1) ) //ball
+	 if(DistX1>=0 && DistX1<=SizeX1 &&DistY1>=0&&DistY1<=SizeY1) //square
+            alien_on = 1'b1;
+				else 
+            alien_on = 1'b0;
+	end
+	
+	always_comb
     begin:RGB_Display
-        if ((ball_on == 1'b1)) 
+        if ((ship_on == 1'b1)) 
         begin 
             Red = 8'hff;
             Green = 8'h55;
             Blue = 8'h00;
-        end       
+        end  
+		  else if ((alien_on == 1'b1)) 
+        begin 
+            Red = 8'h00;
+            Green = 8'h55;
+            Blue = 8'h00;
+        end 
         else 
         begin 
             Red = 8'h00; 

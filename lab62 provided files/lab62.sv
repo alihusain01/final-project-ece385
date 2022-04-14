@@ -68,7 +68,7 @@ logic Reset_h, vssig, blank, sync, VGA_Clk;
 	logic [3:0] hex_num_4, hex_num_3, hex_num_1, hex_num_0; //4 bit input hex digits
 	logic [1:0] signs;
 	logic [1:0] hundreds;
-	logic [9:0] drawxsig, drawysig, ballxsig, ballysig, ballsizesig;
+	logic [9:0] drawxsig, drawysig, shipxsig, shipysig, shipsizesigx, shipsizesigy, alienxsig, alienysig, aliensizesigx,aliensizesigy;
 	logic [7:0] Red, Blue, Green;
 	logic [7:0] keycode;
 
@@ -178,11 +178,13 @@ vga_controller vga_controller(.Clk(MAX10_CLK1_50), .Reset(Reset_h), .hs(VGA_HS),
 //					input [7:0] keycode,
 //               output [9:0]  BallX, BallY, BallS );
 
-ball ball(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .BallX(ballxsig), .BallY(ballysig), .BallS(ballsizesig));
+spaceShip spaceship(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .ShipX(shipxsig), .ShipY(shipysig), .ShipSX(shipsizesigx),.ShipSY(shipsizesigy));
 
 //module  color_mapper ( input        [9:0] BallX, BallY, DrawX, DrawY, Ball_size,
 //                       output logic [7:0]  Red, Green, Blue );
 
-color_mapper color_mapper(.BallX(ballxsig), .BallY(ballysig), .DrawX(drawxsig), .DrawY(drawysig), .Ball_size(ballsizesig), 
+Alien Alien(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .AlienX(alienxsig), .AlienY(alienysig), .AlienSX(aliensizesigx),.AlienSY(aliensizesigy));
+
+color_mapper color_mapper(.BallX(shipxsig), .BallY(shipysig), .AlienX(alienxsig), .AlienY(alienysig), .DrawX(drawxsig), .DrawY(drawysig), .Ball_sizeX(shipsizesigx), .Ball_sizeY(shipsizesigy),
 					.Red(Red), .Green(Green), .Blue(Blue));
 endmodule
