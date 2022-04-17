@@ -68,7 +68,8 @@ logic Reset_h, vssig, blank, sync, VGA_Clk;
 	logic [3:0] hex_num_4, hex_num_3, hex_num_1, hex_num_0; //4 bit input hex digits
 	logic [1:0] signs;
 	logic [1:0] hundreds;
-	logic [9:0] drawxsig, drawysig, shipxsig, shipysig, shipsizesigx, shipsizesigy, alienxsig, alienysig, aliensizesigx,aliensizesigy;
+	logic [9:0] drawxsig, drawysig, shipxsig, shipysig, shipsizesigx, shipsizesigy, aliensizesigx,aliensizesigy;
+	logic [9:0] alienxsig[15], alienysig[15];
 	logic [7:0] Red, Blue, Green;
 	logic [7:0] keycode;
 
@@ -183,8 +184,26 @@ spaceShip spaceship(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .Shi
 //module  color_mapper ( input        [9:0] BallX, BallY, DrawX, DrawY, Ball_size,
 //                       output logic [7:0]  Red, Green, Blue );
 
-Alien Alien(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .AlienX(alienxsig), .AlienY(alienysig), .AlienSX(aliensizesigx),.AlienSY(aliensizesigy));
+int tempVAR, tempVAR1;
+assign tempVAR = 10'b0;
+assign tempVAR1 = 10'b0;
 
-color_mapper color_mapper(.BallX(shipxsig), .BallY(shipysig), .AlienX(alienxsig), .AlienY(alienysig), .DrawX(drawxsig), .DrawY(drawysig), .Ball_sizeX(shipsizesigx), .Ball_sizeY(shipsizesigy),
+Alien Alien0(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .AlienX(alienxsig[0]), .AlienY(alienysig[0]), .AlienSX(aliensizesigx),.AlienSY(aliensizesigy), .AlienX_Offset(0), .AlienY_Offset(tempVAR1));
+Alien Alien1(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .AlienX(alienxsig[1]), .AlienY(alienysig[1]), .AlienSX(aliensizesigx),.AlienSY(aliensizesigy), .AlienX_Offset(50), .AlienY_Offset(0));
+Alien Alien2(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .AlienX(alienxsig[2]), .AlienY(alienysig[2]), .AlienSX(aliensizesigx),.AlienSY(aliensizesigy), .AlienX_Offset(100), .AlienY_Offset(0));
+Alien Alien3(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .AlienX(alienxsig[3]), .AlienY(alienysig[3]), .AlienSX(aliensizesigx),.AlienSY(aliensizesigy), .AlienX_Offset(150), .AlienY_Offset(0));
+Alien Alien4(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .AlienX(alienxsig[4]), .AlienY(alienysig[4]), .AlienSX(aliensizesigx),.AlienSY(aliensizesigy), .AlienX_Offset(200), .AlienY_Offset(0));
+Alien Alien5(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .AlienX(alienxsig[5]), .AlienY(alienysig[5]), .AlienSX(aliensizesigx),.AlienSY(aliensizesigy), .AlienX_Offset(0), .AlienY_Offset(50));
+Alien Alien6(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .AlienX(alienxsig[6]), .AlienY(alienysig[6]), .AlienSX(aliensizesigx),.AlienSY(aliensizesigy), .AlienX_Offset(50), .AlienY_Offset(50));
+Alien Alien7(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .AlienX(alienxsig[7]), .AlienY(alienysig[7]), .AlienSX(aliensizesigx),.AlienSY(aliensizesigy), .AlienX_Offset(100), .AlienY_Offset(50));
+Alien Alien8(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .AlienX(alienxsig[8]), .AlienY(alienysig[8]), .AlienSX(aliensizesigx),.AlienSY(aliensizesigy), .AlienX_Offset(150), .AlienY_Offset(50));
+Alien Alien9(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .AlienX(alienxsig[9]), .AlienY(alienysig[9]), .AlienSX(aliensizesigx),.AlienSY(aliensizesigy), .AlienX_Offset(200), .AlienY_Offset(50));
+Alien Alien10(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .AlienX(alienxsig[10]), .AlienY(alienysig[10]), .AlienSX(aliensizesigx),.AlienSY(aliensizesigy), .AlienX_Offset(0), .AlienY_Offset(100));
+Alien Alien11(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .AlienX(alienxsig[11]), .AlienY(alienysig[11]), .AlienSX(aliensizesigx),.AlienSY(aliensizesigy), .AlienX_Offset(50), .AlienY_Offset(100));
+Alien Alien12(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .AlienX(alienxsig[12]), .AlienY(alienysig[12]), .AlienSX(aliensizesigx),.AlienSY(aliensizesigy), .AlienX_Offset(100), .AlienY_Offset(100));
+Alien Alien13(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .AlienX(alienxsig[13]), .AlienY(alienysig[13]), .AlienSX(aliensizesigx),.AlienSY(aliensizesigy), .AlienX_Offset(150), .AlienY_Offset(100));
+Alien Alien14(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .AlienX(alienxsig[14]), .AlienY(alienysig[14]), .AlienSX(aliensizesigx),.AlienSY(aliensizesigy), .AlienX_Offset(200), .AlienY_Offset(100));
+
+color_mapper color_mapper(.ShipX(shipxsig), .ShipY(shipysig), .AlienX(alienxsig), .AlienY(alienysig), .DrawX(drawxsig), .DrawY(drawysig), .Ball_sizeX(shipsizesigx), .Ball_sizeY(shipsizesigy),
 					.Red(Red), .Green(Green), .Blue(Blue));
 endmodule

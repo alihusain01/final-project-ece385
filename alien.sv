@@ -15,18 +15,24 @@
 
 module  Alien ( input Reset, frame_clk,
 					input [7:0] keycode,
-               output [9:0]  AlienX, AlienY, AlienSX, AlienSY );
+					input logic [9:0] AlienX_Offset, AlienY_Offset,
+               output [9:0]  AlienX, AlienY, AlienSX, AlienSY);
     
     logic [9:0] Alien_X_Pos, Alien_X_Motion, Alien_Y_Pos, Alien_Y_Motion, Alien_SizeX, Alien_SizeY;
 	 
-    parameter [9:0] Alien_X_Center=50;  // Center position on the X axis
-    parameter [9:0] Alien_Y_Center=50;  // Center position on the Y axis
+    logic [9:0] Alien_X_Center;  // Center position on the X axis
+    logic [9:0] Alien_Y_Center;  // Center position on the Y axis
     parameter [9:0] Alien_X_Min=0;       // Leftmost point on the X axis
     parameter [9:0] Alien_X_Max=639;     // Rightmost point on the X axis
     parameter [9:0] Alien_Y_Min=0;       // Topmost point on the Y axis
     parameter [9:0] Alien_Y_Max=479;     // Bottommost point on the Y axis
     parameter [9:0] Alien_X_Step=1;      // Step size on the X axis
     parameter [9:0] Alien_Y_Step=1;      // Step size on the Y axis
+	
+	 always_comb begin
+	 Alien_X_Center = 50 + AlienX_Offset;
+	 Alien_Y_Center = 50 + AlienY_Offset;
+	 end
 
     assign Alien_SizeX = 35;  // assigns the value 4 as a 10-digit binary number, ie "0000000100"
 	 assign Alien_SizeY= 25;
