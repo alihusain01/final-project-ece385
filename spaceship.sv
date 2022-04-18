@@ -52,7 +52,7 @@ module  spaceShip ( input Reset, frame_clk,
 				 if ( (Ship_X_Pos + Ship_SizeX) >= Ship_X_Max )  // Ship is at the Right edge, BOUNCE!
 					  Ship_X_Motion <= (~ (Ship_X_Step) + 1'b1);  // 2's complement.
 					  
-				 else if ( (Ship_X_Pos - Ship_SizeX) <= Ship_X_Min )  // Ship is at the Left edge, BOUNCE!
+				 else if ( (Ship_X_Pos) <= Ship_X_Min )  // Ship is at the Left edge, BOUNCE!
 					  Ship_X_Motion <= Ship_X_Step;
 					  
 				 else begin
@@ -111,7 +111,7 @@ module  spaceShip ( input Reset, frame_clk,
     assign ShipY = Ship_Y_Pos;
    
     assign ShipSX = Ship_SizeX;
-	  assign ShipSY = Ship_SizeY;
+	 assign ShipSY = Ship_SizeY;
     
 
 endmodule

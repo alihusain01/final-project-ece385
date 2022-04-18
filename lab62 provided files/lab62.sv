@@ -68,7 +68,8 @@ logic Reset_h, vssig, blank, sync, VGA_Clk;
 	logic [3:0] hex_num_4, hex_num_3, hex_num_1, hex_num_0; //4 bit input hex digits
 	logic [1:0] signs;
 	logic [1:0] hundreds;
-	logic [9:0] drawxsig, drawysig, shipxsig, shipysig, shipsizesigx, shipsizesigy;
+	logic [9:0] drawxsig, drawysig, shipxsig, shipysig, shipsizesigx, shipsizesigy, 
+				missilexsig, missileysig, missilesizesigx, missilesizesigy;
 	logic [9:0] alienxsig[15], alienysig[15], aliensizesigx[15],aliensizesigy[15];
 	logic [7:0] Red, Blue, Green;
 	logic [7:0] keycode;
@@ -184,9 +185,6 @@ spaceShip spaceship(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .Shi
 //module  color_mapper ( input        [9:0] BallX, BallY, DrawX, DrawY, Ball_size,
 //                       output logic [7:0]  Red, Green, Blue );
 
-int tempVAR, tempVAR1;
-assign tempVAR = 10'b0;
-assign tempVAR1 = 10'b0;
 
 Alien Alien0(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .AlienX(alienxsig[0]), .AlienY(alienysig[0]), .AlienSX(aliensizesigx[0]),.AlienSY(aliensizesigy[0]), .AlienX_Offset(0), .AlienY_Offset(0));
 Alien Alien1(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .AlienX(alienxsig[1]), .AlienY(alienysig[1]), .AlienSX(aliensizesigx[1]),.AlienSY(aliensizesigy[1]), .AlienX_Offset(40), .AlienY_Offset(0));
@@ -204,6 +202,12 @@ Alien Alien12(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .AlienX(al
 Alien Alien13(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .AlienX(alienxsig[13]), .AlienY(alienysig[13]), .AlienSX(aliensizesigx[13]),.AlienSY(aliensizesigy[13]), .AlienX_Offset(120), .AlienY_Offset(50));
 Alien Alien14(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .AlienX(alienxsig[14]), .AlienY(alienysig[14]), .AlienSX(aliensizesigx[14]),.AlienSY(aliensizesigy[14]), .AlienX_Offset(160), .AlienY_Offset(50));
 
-color_mapper color_mapper(.ShipX(shipxsig), .ShipY(shipysig), .AlienX(alienxsig), .AlienY(alienysig), .DrawX(drawxsig), .DrawY(drawysig), .Ship_sizeX(shipsizesigx), .Ship_sizeY(shipsizesigy), .Alien_sizeX(aliensizesigx),.Alien_sizeY(aliensizesigy),
+					
+missile missile(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .ShipX(shipxsig), .ShipY(shipysig), .Ship_sizeX(shipsizesigx), .MissileX(missilexsig), 
+		.MissileY(missileysig), .MissileSX(missilesizesigx), .MissileSY(missilesizesigy));
+
+color_mapper color_mapper(.ShipX(shipxsig), .ShipY(shipysig), .AlienX(alienxsig), .AlienY(alienysig), .DrawX(drawxsig), .DrawY(drawysig), 
+					.MissileX(missilexsig), .MissileY(missileysig), .Missile_sizeX(missilesizesigx), .Missile_sizeY(missilesizesigy),
+					.Ship_sizeX(shipsizesigx), .Ship_sizeY(shipsizesigy), .Alien_sizeX(aliensizesigx), .Alien_sizeY(aliensizesigy),
 					.Red(Red), .Green(Green), .Blue(Blue));
 endmodule

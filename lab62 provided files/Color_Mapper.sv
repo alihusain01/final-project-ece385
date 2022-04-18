@@ -15,29 +15,19 @@
 
 module  color_mapper ( input        [9:0] ShipX, ShipY, DrawX, DrawY, Ship_sizeX, Ship_sizeY, 
 							 input [9:0] AlienX[15], AlienY[15], Alien_sizeX[15],Alien_sizeY[15],
+							 input [9:0] MissileX, MissileY, Missile_sizeX, Missile_sizeY,
                        output logic [7:0]  Red, Green, Blue );
     
-    logic ship_on,alien_on, alien_on_color[3];
+logic ship_on,alien_on, missile_on, alien_on_color[3];
 	 
- /* Old Ball: Generated square box by checking if the current pixel is within a square of length
-    2*Ball_Size, centered at (BallX, BallY).  Note that this requires unsigned comparisons.
-	 
-    if ((DrawX >= BallX - Ball_size) &&
-       (DrawX <= BallX + Ball_size) &&
-       (DrawY >= BallY - Ball_size) &&
-       (DrawY <= BallY + Ball_size))
-
-     New Ball: Generates (pixelated) circle by using the standard circle formula.  Note that while 
-     this single line is quite powerful descriptively, it causes the synthesis tool to use up three
-     of the 12 available multipliers on the chip!  Since the multiplicants are required to be signed,
-	  we have to first cast them from logic to int (signed by default) before they are multiplied). */
-	  
+//FOR SHIP	  
     int DistX, DistY, SizeX,SizeY;
 	 assign DistX = DrawX - ShipX;
     assign DistY = DrawY - ShipY;
     assign SizeX = Ship_sizeX;
 	 assign SizeY = Ship_sizeY;
 	 
+//FOR ALIEN		 
 	 int DistXA[15], DistYA[15];
 	 int SizeXA, SizeYA;
 	 
@@ -52,8 +42,13 @@ module  color_mapper ( input        [9:0] ShipX, ShipY, DrawX, DrawY, Ship_sizeX
 	 
 	 assign SizeXA = Alien_sizeX[0];
 	 assign SizeYA = Alien_sizeY[0];
-
 	 
+//FOR MISSILE
+    int DistXM, DistYM, SizeXM, SizeYM;
+	 assign DistXM = DrawX - MissileX;
+    assign DistYM = DrawY - MissileY;
+    assign SizeXM = Missile_sizeX;
+	 assign SizeYM = Missile_sizeY;	 
 	 
        
 	  
@@ -66,20 +61,6 @@ module  color_mapper ( input        [9:0] ShipX, ShipY, DrawX, DrawY, Ship_sizeX
             ship_on = 1'b0;
      end 
 	  
-//	always_comb
-//	begin	:Alien_on_proc_0
-//	 //if ( ( DistX1*DistX1 + DistY1*DistY1) <= (Size1 * Size1) ) //ball
-//	 for(int i = 0; i < 15; i++)
-//	 begin
-//	 if(!(DistXA[i] >= 0 && DistXA[i] <= SizeXA && DistYA[i] >= 0 && DistYA[i] <= SizeYA)) //square
-//				begin
-//				alien_on = 1'b0;
-//				end
-//				else 
-//            alien_on = 1'b1;
-//				break;
-//	 end
-//	 end
 
 always_comb begin
 
@@ -136,6 +117,14 @@ always_comb begin
 	end
 
 end
+
+always_comb 
+begin: missile_on_proc
+		  if(DistXM>=0 && DistXM <= SizeXM && DistYM>=0 && DistYM <= SizeYM)  //square
+            missile_on = 1'b1; 
+        else 
+            missile_on = 1'b0;
+end
 	
 	always_comb
     begin:RGB_Display
@@ -152,14 +141,20 @@ end
             Green = 8'h55;
             Blue = 8'h00; end
 				else if(alien_on_color[1] == 1'b1) begin //pink maybe
-            Red = 8'h0F;
-            Green = 8'h03;
+            Red = 8'h02;
+            Green = 8'h23;
             Blue = 8'h20; end
 				else begin //red 
             Red = 8'hFF;
             Green = 8'h00;
             Blue = 8'h00; end
-        end 
+        end
+		  else if (missile_on == 1'b1)
+		  begin
+				Red = 8'hFF;
+            Green = 8'hFF;
+            Blue = 8'h00;
+		  end
         else 
         begin 
             Red = 8'h00; 
