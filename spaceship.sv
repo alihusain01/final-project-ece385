@@ -20,7 +20,7 @@ module  spaceShip ( input Reset, frame_clk,
     logic [9:0] Ship_X_Pos, Ship_X_Motion, Ship_Y_Pos, Ship_Y_Motion, Ship_SizeX, Ship_SizeY;
 	 
     parameter [9:0] Ship_X_Center=320;  // Center position on the X axis
-    parameter [9:0] Ship_Y_Center=360;  // Center position on the Y axis
+    parameter [9:0] Ship_Y_Center=440;  // Center position on the Y axis
     parameter [9:0] Ship_X_Min=0;       // Leftmost point on the X axis
     parameter [9:0] Ship_X_Max=639;     // Rightmost point on the X axis
     parameter [9:0] Ship_Y_Min=0;       // Topmost point on the Y axis
@@ -28,8 +28,8 @@ module  spaceShip ( input Reset, frame_clk,
     parameter [9:0] Ship_X_Step=1;      // Step size on the X axis
     parameter [9:0] Ship_Y_Step=1;      // Step size on the Y axis
 
-    assign Ship_SizeX = 35;  // assigns the value 4 as a 10-digit binary number, ie "0000000100"
-   assign Ship_SizeY = 25;
+    assign Ship_SizeX = 25;  // assigns the value 4 as a 10-digit binary number, ie "0000000100"
+   assign Ship_SizeY = 15;
 	
     always_ff @ (posedge Reset or posedge frame_clk )
     begin: Move_Ship

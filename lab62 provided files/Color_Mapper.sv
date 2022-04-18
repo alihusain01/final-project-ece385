@@ -13,12 +13,11 @@
 //-------------------------------------------------------------------------
 
 
-module  color_mapper ( input        [9:0] ShipX, ShipY, DrawX, DrawY, Ball_sizeX, Ball_sizeY, 
-							 input [9:0] AlienX[15], AlienY[15],
+module  color_mapper ( input        [9:0] ShipX, ShipY, DrawX, DrawY, Ship_sizeX, Ship_sizeY, 
+							 input [9:0] AlienX[15], AlienY[15], Alien_sizeX[15],Alien_sizeY[15],
                        output logic [7:0]  Red, Green, Blue );
     
-    logic ship_on,alien_on;
-	 int alienCount;
+    logic ship_on,alien_on, alien_on_color[3];
 	 
  /* Old Ball: Generated square box by checking if the current pixel is within a square of length
     2*Ball_Size, centered at (BallX, BallY).  Note that this requires unsigned comparisons.
@@ -36,8 +35,8 @@ module  color_mapper ( input        [9:0] ShipX, ShipY, DrawX, DrawY, Ball_sizeX
     int DistX, DistY, SizeX,SizeY;
 	 assign DistX = DrawX - ShipX;
     assign DistY = DrawY - ShipY;
-    assign SizeX = Ball_sizeX;
-	 assign SizeY = Ball_sizeY;
+    assign SizeX = Ship_sizeX;
+	 assign SizeY = Ship_sizeY;
 	 
 	 int DistXA[15], DistYA[15];
 	 int SizeXA, SizeYA;
@@ -51,8 +50,8 @@ module  color_mapper ( input        [9:0] ShipX, ShipY, DrawX, DrawY, Ball_sizeX
 		 end
 		end
 	 
-	 assign SizeXA = Ball_sizeX;
-	 assign SizeYA = Ball_sizeY;
+	 assign SizeXA = Alien_sizeX[0];
+	 assign SizeYA = Alien_sizeY[0];
 
 	 
 	 
@@ -84,38 +83,57 @@ module  color_mapper ( input        [9:0] ShipX, ShipY, DrawX, DrawY, Ball_sizeX
 
 always_comb begin
 
-if((DistXA[0] >= 0 && DistXA[0] <= SizeXA && DistYA[0] >= 0 && DistYA[0] <= SizeYA))
-alien_on = 1'b1;
-else if((DistXA[1] >= 0 && DistXA[1] <= SizeXA && DistYA[1] >= 0 && DistYA[1] <= SizeYA))
-alien_on = 1'b1;
-else if((DistXA[2] >= 0 && DistXA[2] <= SizeXA && DistYA[2] >= 0 && DistYA[2] <= SizeYA))
-alien_on = 1'b1;
-else if((DistXA[3] >= 0 && DistXA[3] <= SizeXA && DistYA[3] >= 0 && DistYA[3] <= SizeYA))
-alien_on = 1'b1;
-else if((DistXA[4] >= 0 && DistXA[4] <= SizeXA && DistYA[4] >= 0 && DistYA[4] <= SizeYA))
-alien_on = 1'b1;
-else if((DistXA[5] >= 0 && DistXA[5] <= SizeXA && DistYA[5] >= 0 && DistYA[5] <= SizeYA))
-alien_on = 1'b1;
-else if((DistXA[6] >= 0 && DistXA[6] <= SizeXA && DistYA[6] >= 0 && DistYA[6] <= SizeYA))
-alien_on = 1'b1;
-else if((DistXA[7] >= 0 && DistXA[7] <= SizeXA && DistYA[7] >= 0 && DistYA[7] <= SizeYA))
-alien_on = 1'b1;
-else if((DistXA[8] >= 0 && DistXA[8] <= SizeXA && DistYA[8] >= 0 && DistYA[8] <= SizeYA))
-alien_on = 1'b1;
-else if((DistXA[9] >= 0 && DistXA[9] <= SizeXA && DistYA[9] >= 0 && DistYA[9] <= SizeYA))
-alien_on = 1'b1;
-else if((DistXA[10] >= 0 && DistXA[10] <= SizeXA && DistYA[10] >= 0 && DistYA[10] <= SizeYA))
-alien_on = 1'b1;
-else if((DistXA[11] >= 0 && DistXA[11] <= SizeXA && DistYA[11] >= 0 && DistYA[11] <= SizeYA))
-alien_on = 1'b1;
-else if((DistXA[12] >= 0 && DistXA[12] <= SizeXA && DistYA[12] >= 0 && DistYA[12] <= SizeYA))
-alien_on = 1'b1;
-else if((DistXA[13] >= 0 && DistXA[13] <= SizeXA && DistYA[13] >= 0 && DistYA[13] <= SizeYA))
-alien_on = 1'b1;
-else if((DistXA[14] >= 0 && DistXA[14] <= SizeXA && DistYA[14] >= 0 && DistYA[14] <= SizeYA))
-alien_on = 1'b1;
-else
-alien_on = 1'b0;
+	if((DistXA[0] >= 0 && DistXA[0] <= SizeXA && DistYA[0] >= 0 && DistYA[0] <= SizeYA)) begin
+	alien_on = 1'b1;
+	alien_on_color[0] = 1'b1; end
+	else if((DistXA[1] >= 0 && DistXA[1] <= SizeXA && DistYA[1] >= 0 && DistYA[1] <= SizeYA))begin
+	alien_on = 1'b1;
+	alien_on_color[0] = 1'b1; end
+	else if((DistXA[2] >= 0 && DistXA[2] <= SizeXA && DistYA[2] >= 0 && DistYA[2] <= SizeYA))begin
+	alien_on = 1'b1;
+	alien_on_color[0] = 1'b1; end
+	else if((DistXA[3] >= 0 && DistXA[3] <= SizeXA && DistYA[3] >= 0 && DistYA[3] <= SizeYA))begin
+	alien_on = 1'b1;
+	alien_on_color[0] = 1'b1; end
+	else if((DistXA[4] >= 0 && DistXA[4] <= SizeXA && DistYA[4] >= 0 && DistYA[4] <= SizeYA))begin
+	alien_on = 1'b1;
+	alien_on_color[0] = 1'b1; end
+	else if((DistXA[5] >= 0 && DistXA[5] <= SizeXA && DistYA[5] >= 0 && DistYA[5] <= SizeYA))begin
+	alien_on = 1'b1;
+	alien_on_color[1] = 1'b1; end
+	else if((DistXA[6] >= 0 && DistXA[6] <= SizeXA && DistYA[6] >= 0 && DistYA[6] <= SizeYA))begin
+	alien_on = 1'b1;
+	alien_on_color[1] = 1'b1; end
+	else if((DistXA[7] >= 0 && DistXA[7] <= SizeXA && DistYA[7] >= 0 && DistYA[7] <= SizeYA))begin
+	alien_on = 1'b1;
+	alien_on_color[1] = 1'b1; end
+	else if((DistXA[8] >= 0 && DistXA[8] <= SizeXA && DistYA[8] >= 0 && DistYA[8] <= SizeYA))begin
+	alien_on = 1'b1;
+	alien_on_color[1] = 1'b1; end
+	else if((DistXA[9] >= 0 && DistXA[9] <= SizeXA && DistYA[9] >= 0 && DistYA[9] <= SizeYA))begin
+	alien_on = 1'b1;
+	alien_on_color[1] = 1'b1; end
+	else if((DistXA[10] >= 0 && DistXA[10] <= SizeXA && DistYA[10] >= 0 && DistYA[10] <= SizeYA))begin
+	alien_on = 1'b1;
+	alien_on_color[2] = 1'b1; end
+	else if((DistXA[11] >= 0 && DistXA[11] <= SizeXA && DistYA[11] >= 0 && DistYA[11] <= SizeYA))begin
+	alien_on = 1'b1;
+	alien_on_color[2] = 1'b1; end
+	else if((DistXA[12] >= 0 && DistXA[12] <= SizeXA && DistYA[12] >= 0 && DistYA[12] <= SizeYA))begin
+	alien_on = 1'b1;
+	alien_on_color[2] = 1'b1; end
+	else if((DistXA[13] >= 0 && DistXA[13] <= SizeXA && DistYA[13] >= 0 && DistYA[13] <= SizeYA))begin
+	alien_on = 1'b1;
+	alien_on_color[2] = 1'b1; end
+	else if((DistXA[14] >= 0 && DistXA[14] <= SizeXA && DistYA[14] >= 0 && DistYA[14] <= SizeYA))begin
+	alien_on = 1'b1;
+	alien_on_color[2] = 1'b1; end
+	else begin
+	alien_on = 1'b0;
+	alien_on_color[0] = 1'b0;
+	alien_on_color[1] = 1'b0;
+	alien_on_color[2] = 1'b0;
+	end
 
 end
 	
@@ -129,9 +147,18 @@ end
         end  
 		  else if ((alien_on == 1'b1)) 
         begin 
+				if(alien_on_color[0] == 1'b1) begin // green
             Red = 8'h00;
             Green = 8'h55;
-            Blue = 8'h00;
+            Blue = 8'h00; end
+				else if(alien_on_color[1] == 1'b1) begin //pink maybe
+            Red = 8'h0F;
+            Green = 8'h03;
+            Blue = 8'h20; end
+				else begin //red 
+            Red = 8'hFF;
+            Green = 8'h00;
+            Blue = 8'h00; end
         end 
         else 
         begin 

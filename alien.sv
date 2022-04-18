@@ -22,8 +22,8 @@ module  Alien ( input Reset, frame_clk,
 	 
     logic [9:0] Alien_X_Center;  // Center position on the X axis
     logic [9:0] Alien_Y_Center;  // Center position on the Y axis
-    parameter [9:0] Alien_X_Min=0;       // Leftmost point on the X axis
-    parameter [9:0] Alien_X_Max=639;     // Rightmost point on the X axis
+    logic [9:0] Alien_X_Min;       // Leftmost point on the X axis
+    logic [9:0] Alien_X_Max;     // Rightmost point on the X axis
     parameter [9:0] Alien_Y_Min=0;       // Topmost point on the Y axis
     parameter [9:0] Alien_Y_Max=479;     // Bottommost point on the Y axis
     parameter [9:0] Alien_X_Step=1;      // Step size on the X axis
@@ -32,10 +32,12 @@ module  Alien ( input Reset, frame_clk,
 	 always_comb begin
 	 Alien_X_Center = 50 + AlienX_Offset;
 	 Alien_Y_Center = 50 + AlienY_Offset;
+	 Alien_X_Min= AlienX_Offset; 
+	 Alien_X_Max= 639 - 160 + AlienX_Offset;
 	 end
 
-    assign Alien_SizeX = 35;  // assigns the value 4 as a 10-digit binary number, ie "0000000100"
-	 assign Alien_SizeY= 25;
+    assign Alien_SizeX = 25;  // assigns the value 4 as a 10-digit binary number, ie "0000000100"
+	 assign Alien_SizeY= 20;
     always_ff @ (posedge Reset or posedge frame_clk )
     begin: Move_Alien
         if (Reset)  // Asynchronous Reset
@@ -54,15 +56,17 @@ module  Alien ( input Reset, frame_clk,
 				 else if ( (Alien_Y_Pos - Alien_SizeY) <= Alien_Y_Min )  // Alien is at the top edge, BOUNCE!
 					  Alien_Y_Motion <= Alien_Y_Step;
 					  
-				  else if ( (Alien_X_Pos + Alien_SizeX) >= Alien_X_Max )  // Alien is at the Right edge, BOUNCE!
+				 else if ( (Alien_X_Pos + Alien_SizeX) >= Alien_X_Max )  // Alien is at the Right edge, BOUNCE!
 					  begin
-					  Alien_X_Motion <= (~ (Alien_X_Step) + 1'b1);  // 2's complement.
 					  Alien_Y_Pos += 25;
+					  Alien_X_Pos -= 1;
+					  Alien_X_Motion <= (~ (Alien_X_Step) + 1'b1);  // 2's complement.
 					  end			  
 				 else if ( (Alien_X_Pos - Alien_SizeX) <= Alien_X_Min )  // Alien is at the Left edge, BOUNCE!
 					  begin
-					  Alien_X_Motion <= Alien_X_Step;
 					  Alien_Y_Pos += 25;
+					  Alien_X_Pos += 1;
+					  Alien_X_Motion <= Alien_X_Step;
 					  end
 				 else begin
 					  Alien_Y_Motion <= Alien_Y_Motion;  // Alien is somewhere in the middle, don't bounce, just keep moving
