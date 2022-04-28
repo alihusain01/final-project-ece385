@@ -64,7 +64,7 @@ logic Reset_h, vssig, blank, sync, VGA_Clk;
 //=======================================================
 //  REG/WIRE declarations
 //=======================================================
-	logic SPI0_CS_N, SPI0_SCLK, SPI0_MISO, SPI0_MOSI, USB_GPX, USB_IRQ, USB_RST;
+	logic SPI0_CS_N, SPI0_SCLK, SPI0_MISO, SPI0_MOSI, USB_GPX, USB_IRQ, USB_RST, Collision;
 	logic [3:0] hex_num_4, hex_num_3, hex_num_1, hex_num_0; //4 bit input hex digits
 	logic [1:0] signs;
 	logic [1:0] hundreds;
@@ -203,11 +203,11 @@ Alien Alien13(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .AlienX(al
 Alien Alien14(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .AlienX(alienxsig[14]), .AlienY(alienysig[14]), .AlienSX(aliensizesigx[14]),.AlienSY(aliensizesigy[14]), .AlienX_Offset(160), .AlienY_Offset(50));
 
 					
-missile missile(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .ShipX(shipxsig), .ShipY(shipysig), .Ship_sizeX(shipsizesigx), .MissileX(missilexsig), 
+missile missile(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .Collision(Collision), .ShipX(shipxsig), .ShipY(shipysig), .Ship_sizeX(shipsizesigx), .MissileX(missilexsig), 
 		.MissileY(missileysig), .MissileSX(missilesizesigx), .MissileSY(missilesizesigy));
 
-color_mapper color_mapper(.ShipX(shipxsig), .ShipY(shipysig), .AlienX(alienxsig), .AlienY(alienysig), .DrawX(drawxsig), .DrawY(drawysig), 
+color_mapper color_mapper(.pixel_clk(VGA_Clk), .Reset(Reset_h), .ShipX(shipxsig), .ShipY(shipysig), .AlienX(alienxsig), .AlienY(alienysig), .DrawX(drawxsig), .DrawY(drawysig), 
 					.MissileX(missilexsig), .MissileY(missileysig), .Missile_sizeX(missilesizesigx), .Missile_sizeY(missilesizesigy),
-					.Ship_sizeX(shipsizesigx), .Ship_sizeY(shipsizesigy), .Alien_sizeX(aliensizesigx), .Alien_sizeY(aliensizesigy),
+					.Ship_sizeX(shipsizesigx), .Ship_sizeY(shipsizesigy), .Alien_sizeX(aliensizesigx), .Alien_sizeY(aliensizesigy), .Collision(Collision),
 					.Red(Red), .Green(Green), .Blue(Blue));
 endmodule

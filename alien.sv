@@ -16,7 +16,8 @@
 module  Alien ( input Reset, frame_clk,
 					input [7:0] keycode,
 					input logic [9:0] AlienX_Offset, AlienY_Offset,
-               output [9:0]  AlienX, AlienY, AlienSX, AlienSY);
+               output [9:0]  AlienX, AlienY, AlienSX, AlienSY
+					);
     
     logic [9:0] Alien_X_Pos, Alien_X_Motion, Alien_Y_Pos, Alien_Y_Motion, Alien_SizeX, Alien_SizeY;
 	 
@@ -28,6 +29,7 @@ module  Alien ( input Reset, frame_clk,
     parameter [9:0] Alien_Y_Max=479;     // Bottommost point on the Y axis
     parameter [9:0] Alien_X_Step=1;      // Step size on the X axis
     parameter [9:0] Alien_Y_Step=1;      // Step size on the Y axis
+	 
 	
 	 always_comb begin
 	 Alien_X_Center = 50 + AlienX_Offset;
@@ -51,8 +53,10 @@ module  Alien ( input Reset, frame_clk,
         else 
         begin 
 				 if ( (Alien_Y_Pos + Alien_SizeY) >= Alien_Y_Max )  // Alien is at the bottom edge, BOUNCE!
+					  begin
 					  Alien_Y_Motion <= (~ (Alien_Y_Step) + 1'b1);  // 2's complement.
-					  
+					//  Alien_Destroyed=1'b1;
+					  end
 				 else if ( (Alien_Y_Pos - Alien_SizeY) <= Alien_Y_Min )  // Alien is at the top edge, BOUNCE!
 					  Alien_Y_Motion <= Alien_Y_Step;
 					  
@@ -99,8 +103,8 @@ module  Alien ( input Reset, frame_clk,
 //					default: ;
 //			   endcase
 				 
-				 Alien_Y_Pos <= (Alien_Y_Pos + Alien_Y_Motion);  // Update Alien position
-				 Alien_X_Pos <= (Alien_X_Pos + Alien_X_Motion);
+				 Alien_Y_Pos = (Alien_Y_Pos + Alien_Y_Motion);  // Update Alien position
+				 Alien_X_Pos = (Alien_X_Pos + Alien_X_Motion);
 			
 			
 	  /**************************************************************************************
@@ -118,8 +122,9 @@ module  Alien ( input Reset, frame_clk,
        
     assign AlienX = Alien_X_Pos;
     assign AlienY = Alien_Y_Pos;
+	 
    
     assign AlienSX = Alien_SizeX;
     assign AlienSY = Alien_SizeY;
-
+	 //assign AlienDestroyed=Alien_Destroyed;
 endmodule
