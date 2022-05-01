@@ -13,14 +13,17 @@
 //-------------------------------------------------------------------------
 
 
-module  color_mapper ( input pixel_clk, Reset,
+module  color_mapper ( input pixel_clk, Reset, blank,
 								input        [9:0] ShipX, ShipY, DrawX, DrawY, Ship_sizeX, Ship_sizeY, 
 							 input [9:0] AlienX[15], AlienY[15], Alien_sizeX[15],Alien_sizeY[15],
 							 input [9:0] MissileX, MissileY, Missile_sizeX, Missile_sizeY,
+							 input [23:0] uiucColor,
                        output logic [7:0]  Red, Green, Blue,
 								output logic Collision);
     
 logic ship_on,alien_on, missile_on, alien_on_color[3];
+
+
 	 
 //FOR SHIP	  
     int DistX, DistY, SizeX,SizeY;
@@ -55,17 +58,12 @@ logic ship_on,alien_on, missile_on, alien_on_color[3];
 //FOR COLLISION
 	logic [4:0] alien_on_number;
 	logic alienLife[15] = '{1'b1,1'b1,1'b1,1'b1,1'b1,1'b1,1'b1,1'b1,1'b1,1'b1,1'b1,1'b1,1'b1,1'b1,1'b1};
-
-//	always_ff @ (posedge Reset) begin
-//	alienLife[15]= '{1'b1,1'b1,1'b1,1'b1,1'b1,1'b1,1'b1,1'b1,1'b1,1'b1,1'b1,1'b1,1'b1,1'b1,1'b1};
-//	end
-	 
        
 	  
     always_comb
     begin:Ship_on_proc
         //if ( ( DistX*DistX + DistY*DistY) <= (Size * Size) ) //ball
-		  if(DistX>=0 && DistX<=SizeX &&DistY>=0&&DistY<=SizeY)  //square
+		  if( (DistX>=0) && (DistX<SizeX) && (DistY>=0) && (DistY<SizeY))  //square
             ship_on = 1'b1; 
         else 
             ship_on = 1'b0;
@@ -169,24 +167,57 @@ begin: missile_on_proc
             missile_on = 1'b0;
 end
 
-always_ff @ (posedge pixel_clk)
-begin: Collision_Logic
-	if((alien_on == 1'b1) && (missile_on == 1'b1))
+always_ff @ (posedge pixel_clk or posedge Reset)
+begin: AlienLife_Logic
+	if(Reset)
 	begin
-	Collision <= 1'b1;
+		alienLife[0] = 1'b1;
+		alienLife[1] = 1'b1;
+		alienLife[2] = 1'b1;
+		alienLife[3] = 1'b1;
+		alienLife[4] = 1'b1;
+		alienLife[5] = 1'b1;
+		alienLife[6] = 1'b1;
+		alienLife[7] = 1'b1;
+		alienLife[8] = 1'b1;
+		alienLife[9] = 1'b1;
+		alienLife[10] = 1'b1;
+		alienLife[11] = 1'b1;
+		alienLife[12] = 1'b1;
+		alienLife[13] = 1'b1;
+		alienLife[14] = 1'b1;
+	end	
+	else if((alien_on == 1'b1) && (missile_on == 1'b1))
+	begin
 	alienLife[alien_on_number] <= 1'b0;
 	end
-	if(DrawX > 790 && DrawY > 520)
+end
+
+//for Collision
+always_ff @ (posedge pixel_clk)
+begin: Collision_Logic 
+if(DrawX > 790 && DrawY > 520)
 	Collision <= 1'b0;
+else if((alien_on == 1'b1) && (missile_on == 1'b1))
+	Collision <= 1'b1;
 end
 	
 always_ff @ (posedge pixel_clk)
  begin:RGB_Display
-	  if ((ship_on == 1'b1)) 
+//		if(blank==1'b0) begin
+//		Red = 8'h00;
+//		Green = 8'h00;
+//		Blue = 8'h00;
+//		end else 
+//		begin
+	  if ((ship_on == 1'b1) && (uiucColor[23:20] != 4'hF)) 
 	  begin 
-			Red = 8'hff;
-			Green = 8'h55;
-			Blue = 8'h00;
+//     		Red = 8'hff;
+//			Green = 8'h55;
+//			Blue = 8'h00;
+		Red = uiucColor[23:16];
+		Green = uiucColor[15:8];
+		Blue = uiucColor[7:0];
 	  end  
 	  else if ((alien_on == 1'b1)) 
 	  begin 
@@ -215,6 +246,7 @@ always_ff @ (posedge pixel_clk)
 			Green = 8'h00;
 			Blue = 8'h7f - DrawX[9:3];
 	  end      
- end 
+ end
+ 
     
 endmodule

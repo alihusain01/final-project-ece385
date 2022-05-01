@@ -1,0 +1,20 @@
+module uiucROM
+(
+	input [18:0] read_address,
+	input we,Clk,
+
+	output logic [4:0] data_Out
+);
+
+logic [2:0] mem [0:624];
+
+initial 
+begin
+	$readmemh("spriteBytes/uiuc.txt",mem);
+end
+
+always_ff @ (posedge Clk) begin
+	data_Out <= mem[read_address];
+end
+
+endmodule

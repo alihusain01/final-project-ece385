@@ -316,6 +316,10 @@
 					"strict" : false
 				},
 				{
+					"name" : "VGA_B[3]",
+					"strict" : false
+				},
+				{
 					"name" : "DRAM_DQ[0]",
 					"strict" : false
 				},

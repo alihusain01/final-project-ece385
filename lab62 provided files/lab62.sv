@@ -208,6 +208,18 @@ missile missile(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .Collisi
 
 color_mapper color_mapper(.pixel_clk(VGA_Clk), .Reset(Reset_h), .ShipX(shipxsig), .ShipY(shipysig), .AlienX(alienxsig), .AlienY(alienysig), .DrawX(drawxsig), .DrawY(drawysig), 
 					.MissileX(missilexsig), .MissileY(missileysig), .Missile_sizeX(missilesizesigx), .Missile_sizeY(missilesizesigy),
-					.Ship_sizeX(shipsizesigx), .Ship_sizeY(shipsizesigy), .Alien_sizeX(aliensizesigx), .Alien_sizeY(aliensizesigy), .Collision(Collision),
-					.Red(Red), .Green(Green), .Blue(Blue));
+					.Ship_sizeX(shipsizesigx), .Ship_sizeY(shipsizesigy), .Alien_sizeX(aliensizesigx), .Alien_sizeY(aliensizesigy), .Collision(Collision), .uiucColor(uiuc_Color),
+					.Red(Red), .Green(Green), .Blue(Blue), .blank(blank));
+					
+///// ROM Instantations /////////
+logic [9:0] uiucRom_Address;
+logic [3:0] uiucPalette_Address;
+logic [23:0] uiuc_Color;
+
+spriteController spriteController(.Clk(MAX10_CLK1_50), .drawX(drawxsig), .drawY(drawysig), .ShipX(shipxsig), .ShipY(shipysig), .Ship_Address(uiucRom_Address));
+
+uiucROM uiucROM(.read_address(uiucRom_Address), .Clk(MAX10_CLK1_50), .data_Out(uiucPalette_Address));
+uiucPalette uiucPalette(.read_address(uiucPalette_Address), .Clk(MAX10_CLK1_50), .data_Out(uiuc_Color));
+
+
 endmodule
