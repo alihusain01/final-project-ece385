@@ -17,7 +17,7 @@ module  color_mapper ( input pixel_clk, Reset, blank,
 								input        [9:0] ShipX, ShipY, DrawX, DrawY, Ship_sizeX, Ship_sizeY, 
 							 input [9:0] AlienX[15], AlienY[15], Alien_sizeX[15],Alien_sizeY[15],
 							 input [9:0] MissileX, MissileY, Missile_sizeX, Missile_sizeY,
-							 input [23:0] uiucColor,
+							 input [23:0] uiucColor, NWColor, PurdueColor, WiscoColor, backgroundColor,
                        output logic [7:0]  Red, Green, Blue,
 								output logic Collision);
     
@@ -72,78 +72,78 @@ logic ship_on,alien_on, missile_on, alien_on_color[3];
 
 always_comb begin
 
-	if((DistXA[0] >= 0 && DistXA[0] <= SizeXA && DistYA[0] >= 0 && DistYA[0] <= SizeYA) && alienLife[0]==1'b1) begin
+	if(((DistXA[0] >= 0) && (DistXA[0] < SizeXA) && (DistYA[0] >= 0) && (DistYA[0] < SizeYA)) && alienLife[0]==1'b1) begin
 	alien_on = 1'b1;
 	alien_on_color[0] = 1'b1; 
 	alien_on_number = 0;
 	end
 	
-	else if((DistXA[1] >= 0 && DistXA[1] <= SizeXA && DistYA[1] >= 0 && DistYA[1] <= SizeYA) && alienLife[1]==1'b1)begin
+	else if(((DistXA[1] >= 0) && (DistXA[1] < SizeXA) && (DistYA[1] >= 0) && (DistYA[1] < SizeYA)) && alienLife[1]==1'b1)begin
 	alien_on = 1'b1;
 	alien_on_color[0] = 1'b1;
 	alien_on_number = 1;end
 	
-	else if((DistXA[2] >= 0 && DistXA[2] <= SizeXA && DistYA[2] >= 0 && DistYA[2] <= SizeYA) && alienLife[2]==1'b1)begin
+	else if(((DistXA[2] >= 0) && (DistXA[2] < SizeXA) && (DistYA[2] >= 0) && (DistYA[2] < SizeYA)) && alienLife[2]==1'b1)begin
 	alien_on = 1'b1;
 	alien_on_color[0] = 1'b1;
 	alien_on_number = 2;	end
 	
-	else if((DistXA[3] >= 0 && DistXA[3] <= SizeXA && DistYA[3] >= 0 && DistYA[3] <= SizeYA) && alienLife[3]==1'b1)begin
+	else if(((DistXA[3] >= 0) && (DistXA[3] < SizeXA) && (DistYA[3] >= 0) && (DistYA[3] < SizeYA)) && alienLife[3]==1'b1)begin
 	alien_on = 1'b1;
 	alien_on_color[0] = 1'b1;
 	alien_on_number = 3;end
 	
-	else if((DistXA[4] >= 0 && DistXA[4] <= SizeXA && DistYA[4] >= 0 && DistYA[4] <= SizeYA) && alienLife[4]==1'b1)begin
+	else if(((DistXA[4] >= 0) && (DistXA[4] < SizeXA) && (DistYA[4] >= 0) && (DistYA[4] < SizeYA)) && alienLife[4]==1'b1)begin
 	alien_on = 1'b1;
 	alien_on_color[0] = 1'b1; 
 	alien_on_number = 4; end
 	
-	else if((DistXA[5] >= 0 && DistXA[5] <= SizeXA && DistYA[5] >= 0 && DistYA[5] <= SizeYA) && alienLife[5]==1'b1)begin
+	else if(((DistXA[5] >= 0) && (DistXA[5] < SizeXA) && (DistYA[5] >= 0) && (DistYA[5] < SizeYA)) && alienLife[5]==1'b1)begin
 	alien_on = 1'b1;
 	alien_on_color[1] = 1'b1;
 	alien_on_number = 5;	end
 	
-	else if((DistXA[6] >= 0 && DistXA[6] <= SizeXA && DistYA[6] >= 0 && DistYA[6] <= SizeYA) && alienLife[6]==1'b1)begin
+	else if(((DistXA[6] >= 0) && (DistXA[6] < SizeXA) && (DistYA[6] >= 0) && (DistYA[6] < SizeYA)) && alienLife[6]==1'b1)begin
 	alien_on = 1'b1;
 	alien_on_color[1] = 1'b1;
 	alien_on_number = 6;	end
 	
-	else if((DistXA[7] >= 0 && DistXA[7] <= SizeXA && DistYA[7] >= 0 && DistYA[7] <= SizeYA) && alienLife[7]==1'b1)begin
+	else if(((DistXA[7] >= 0) && (DistXA[7] < SizeXA) && (DistYA[7] >= 0) && (DistYA[7] < SizeYA)) && alienLife[7]==1'b1)begin
 	alien_on = 1'b1;
 	alien_on_color[1] = 1'b1; 
 	alien_on_number = 7;end
 	
-	else if((DistXA[8] >= 0 && DistXA[8] <= SizeXA && DistYA[8] >= 0 && DistYA[8] <= SizeYA) && alienLife[8]==1'b1)begin
+	else if(((DistXA[8] >= 0) && (DistXA[8] < SizeXA) && (DistYA[8] >= 0) && (DistYA[8] < SizeYA)) && alienLife[8]==1'b1)begin
 	alien_on = 1'b1;
 	alien_on_color[1] = 1'b1; 
 	alien_on_number = 8;	end
 	
-	else if((DistXA[9] >= 0 && DistXA[9] <= SizeXA && DistYA[9] >= 0 && DistYA[9] <= SizeYA) && alienLife[9]==1'b1)begin
+	else if(((DistXA[9] >= 0) && (DistXA[9] < SizeXA) && (DistYA[9] >= 0) && (DistYA[9] < SizeYA)) && alienLife[9]==1'b1)begin
 	alien_on = 1'b1;
 	alien_on_color[1] = 1'b1; 
 	alien_on_number = 9;	end
 	
-	else if((DistXA[10] >= 0 && DistXA[10] <= SizeXA && DistYA[10] >= 0 && DistYA[10] <= SizeYA) && alienLife[10]==1'b1)begin
+	else if(((DistXA[10] >= 0) && (DistXA[10] < SizeXA) && (DistYA[10] >= 0) && (DistYA[10] < SizeYA)) && alienLife[10]==1'b1)begin
 	alien_on = 1'b1;
 	alien_on_color[2] = 1'b1; 
 	alien_on_number = 10;	end
 	
-	else if((DistXA[11] >= 0 && DistXA[11] <= SizeXA && DistYA[11] >= 0 && DistYA[11] <= SizeYA) && alienLife[11]==1'b1)begin
+	else if(((DistXA[11] >= 0) && (DistXA[11] < SizeXA) && (DistYA[11] >= 0) && (DistYA[11] < SizeYA)) && alienLife[11]==1'b1)begin
 	alien_on = 1'b1;
 	alien_on_color[2] = 1'b1; 
 	alien_on_number = 11;	end
 	
-	else if((DistXA[12] >= 0 && DistXA[12] <= SizeXA && DistYA[12] >= 0 && DistYA[12] <= SizeYA) && alienLife[12]==1'b1)begin
+	else if(((DistXA[12] >= 0) && (DistXA[12] < SizeXA) && (DistYA[12] >= 0) && (DistYA[12] < SizeYA)) && alienLife[12]==1'b1)begin
 	alien_on = 1'b1;
 	alien_on_color[2] = 1'b1; 
 	alien_on_number = 12;	end
 	
-	else if((DistXA[13] >= 0 && DistXA[13] <= SizeXA && DistYA[13] >= 0 && DistYA[13] <= SizeYA) && alienLife[13]==1'b1)begin
+	else if(((DistXA[13] >= 0) && (DistXA[13] < SizeXA) && (DistYA[13] >= 0) && (DistYA[13] < SizeYA)) && alienLife[13]==1'b1)begin
 	alien_on = 1'b1;
 	alien_on_color[2] = 1'b1; 
 	alien_on_number = 13;	end
 	
-	else if((DistXA[14] >= 0 && DistXA[14] <= SizeXA && DistYA[14] >= 0 && DistYA[14] <= SizeYA) && alienLife[14]==1'b1)begin
+	else if(((DistXA[14] >= 0) && (DistXA[14] < SizeXA) && (DistYA[14] >= 0) && (DistYA[14] < SizeYA)) && alienLife[14]==1'b1)begin
 	alien_on = 1'b1;
 	alien_on_color[2] = 1'b1; 
 	alien_on_number = 14;	end
@@ -219,21 +219,28 @@ always_ff @ (posedge pixel_clk)
 		Green = uiucColor[15:8];
 		Blue = uiucColor[7:0];
 	  end  
-	  else if ((alien_on == 1'b1)) 
-	  begin 
-			if(alien_on_color[0] == 1'b1) begin // green
-			Red = 8'h00;
-			Green = 8'h55;
-			Blue = 8'h00; end
-			else if(alien_on_color[1] == 1'b1) begin //pink maybe
-			Red = 8'h02;
-			Green = 8'h23;
-			Blue = 8'h20; end
-			else begin //red 
-			Red = 8'hFF;
-			Green = 8'h00;
-			Blue = 8'h00; end
-	  end
+	  //else if ((alien_on == 1'b1))  
+			else if((alien_on == 1'b1) && (alien_on_color[0] == 1'b1) && (NWColor[23:20] != 4'hF)) begin // green
+//			Red = 8'h00;
+//			Green = 8'h55;
+//			Blue = 8'h00; end
+			Red = NWColor[23:16];
+			Green = NWColor[15:8];
+			Blue = NWColor[7:0]; end
+			
+			else if((alien_on == 1'b1) && (alien_on_color[1] == 1'b1) && (PurdueColor[23:20] != 4'hF)) begin //pink maybe
+//			Red = 8'h02;
+//			Green = 8'h23;
+//			Blue = 8'h20; end
+			Red = PurdueColor[23:16];
+			Green = PurdueColor[15:8];
+			Blue = PurdueColor[7:0]; end
+			else if ((alien_on == 1'b1) && (alien_on_color[2] == 1'b1) && (WiscoColor[23:20] != 4'hF)) begin
+			//red
+			Red = WiscoColor[23:16];
+			Green = WiscoColor[15:8];
+			Blue = WiscoColor[7:0]; 
+			end
 	  else if (missile_on == 1'b1)
 	  begin
 			Red = 8'hFF;
@@ -242,9 +249,12 @@ always_ff @ (posedge pixel_clk)
 	  end
 	  else 
 	  begin 
-			Red = 8'h00; 
-			Green = 8'h00;
-			Blue = 8'h7f - DrawX[9:3];
+//			Red = 8'h00; 
+//			Green = 8'h00;
+//			Blue = 8'h7f - DrawX[9:3];
+			Red = backgroundColor[23:16]; 
+			Green = backgroundColor[15:8];
+			Blue = backgroundColor[7:0];
 	  end      
  end
  

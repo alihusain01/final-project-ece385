@@ -60,7 +60,7 @@ module  Alien ( input Reset, frame_clk,
 				 else if ( (Alien_Y_Pos - Alien_SizeY) <= Alien_Y_Min )  // Alien is at the top edge, BOUNCE!
 					  Alien_Y_Motion <= Alien_Y_Step;
 					  
-				 else if ( (Alien_X_Pos + Alien_SizeX) >= Alien_X_Max )  // Alien is at the Right edge, BOUNCE!
+				 else if ( (Alien_X_Pos + Alien_SizeX) > Alien_X_Max )  // Alien is at the Right edge, BOUNCE!
 					  begin
 					  Alien_Y_Pos += 25;
 					  Alien_X_Pos -= 1;

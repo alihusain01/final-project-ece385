@@ -208,7 +208,7 @@ missile missile(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .Collisi
 
 color_mapper color_mapper(.pixel_clk(VGA_Clk), .Reset(Reset_h), .ShipX(shipxsig), .ShipY(shipysig), .AlienX(alienxsig), .AlienY(alienysig), .DrawX(drawxsig), .DrawY(drawysig), 
 					.MissileX(missilexsig), .MissileY(missileysig), .Missile_sizeX(missilesizesigx), .Missile_sizeY(missilesizesigy),
-					.Ship_sizeX(shipsizesigx), .Ship_sizeY(shipsizesigy), .Alien_sizeX(aliensizesigx), .Alien_sizeY(aliensizesigy), .Collision(Collision), .uiucColor(uiuc_Color),
+					.Ship_sizeX(shipsizesigx), .Ship_sizeY(shipsizesigy), .Alien_sizeX(aliensizesigx), .Alien_sizeY(aliensizesigy), .Collision(Collision), .uiucColor(uiuc_Color), .NWColor(NW_Color), .PurdueColor(Purdue_Color), .WiscoColor(Wisco_Color), .backgroundColor(background_Color),
 					.Red(Red), .Green(Green), .Blue(Blue), .blank(blank));
 					
 ///// ROM Instantations /////////
@@ -216,10 +216,39 @@ logic [9:0] uiucRom_Address;
 logic [3:0] uiucPalette_Address;
 logic [23:0] uiuc_Color;
 
-spriteController spriteController(.Clk(MAX10_CLK1_50), .drawX(drawxsig), .drawY(drawysig), .ShipX(shipxsig), .ShipY(shipysig), .Ship_Address(uiucRom_Address));
+logic [9:0] NWRom_Address;
+logic [3:0] NWPalette_Address;
+logic [23:0] NW_Color;
+
+logic [9:0] PurdueRom_Address;
+logic [3:0] PurduePalette_Address;
+logic [23:0] Purdue_Color;
+
+logic [9:0] WiscoRom_Address;
+logic [3:0] WiscoPalette_Address;
+logic [23:0] Wisco_Color;
+
+logic [18:0] backgroundRom_Address;
+logic [3:0] backgroundPalette_Address;
+logic [23:0] background_Color;
+
+spriteController spriteController(.Clk(MAX10_CLK1_50), .drawX(drawxsig), .drawY(drawysig), .ShipX(shipxsig), .ShipY(shipysig), .AlienX(alienxsig), .AlienY(alienysig), .Ship_Address(uiucRom_Address), 
+							.NWRom_Address(NWRom_Address), .PurdueRom_Address(PurdueRom_Address), .WiscoRom_Address(WiscoRom_Address), .backgroundRom_Address(backgroundRom_Address));
 
 uiucROM uiucROM(.read_address(uiucRom_Address), .Clk(MAX10_CLK1_50), .data_Out(uiucPalette_Address));
 uiucPalette uiucPalette(.read_address(uiucPalette_Address), .Clk(MAX10_CLK1_50), .data_Out(uiuc_Color));
+
+NWROM NWROM(.read_address(NWRom_Address), .Clk(MAX10_CLK1_50), .data_Out(NWPalette_Address));
+NWPalette NWPalette(.read_address(NWPalette_Address), .Clk(MAX10_CLK1_50), .data_Out(NW_Color));
+
+PurdueROM PurdueROM(.read_address(PurdueRom_Address), .Clk(MAX10_CLK1_50), .data_Out(PurduePalette_Address));
+PurduePalette PurduePalette(.read_address(PurduePalette_Address), .Clk(MAX10_CLK1_50), .data_Out(Purdue_Color));
+
+WiscoROM WiscoROM(.read_address(WiscoRom_Address), .Clk(MAX10_CLK1_50), .data_Out(WiscoPalette_Address));
+WiscoPalette WiscoPalette(.read_address(WiscoPalette_Address), .Clk(MAX10_CLK1_50), .data_Out(Wisco_Color));
+
+backgroundROM backgroundROM(.read_address(backgroundRom_Address), .Clk(MAX10_CLK1_50), .data_Out(backgroundPalette_Address));
+backgroundPalette backgroundPalette(.read_address(backgroundPalette_Address), .Clk(MAX10_CLK1_50), .data_Out(background_Color));
 
 
 endmodule
