@@ -17,11 +17,12 @@ module  color_mapper ( input pixel_clk, Reset, blank,
 								input        [9:0] ShipX, ShipY, DrawX, DrawY, Ship_sizeX, Ship_sizeY, 
 							 input [9:0] AlienX[15], AlienY[15], Alien_sizeX[15],Alien_sizeY[15],
 							 input [9:0] MissileX, MissileY, Missile_sizeX, Missile_sizeY,
-							 input [23:0] uiucColor, NWColor, PurdueColor, WiscoColor, backgroundColor,
+							 MissileAX[15], MissileAY[15],
+							 input [23:0] uiucColor, NWColor, PurdueColor, WiscoColor,
                        output logic [7:0]  Red, Green, Blue,
-								output logic Collision);
+								output logic Collision, CollisionA[15]);
     
-logic ship_on,alien_on, missile_on, alien_on_color[3];
+logic ship_on,alien_on, missile_on, alien_on_color[3], missileA_on;
 
 
 	 
@@ -48,12 +49,28 @@ logic ship_on,alien_on, missile_on, alien_on_color[3];
 	 assign SizeXA = Alien_sizeX[0];
 	 assign SizeYA = Alien_sizeY[0];
 	 
-//FOR MISSILE
+//FOR MISSILE Ship
     int DistXM, DistYM, SizeXM, SizeYM;
 	 assign DistXM = DrawX - MissileX;
     assign DistYM = DrawY - MissileY;
     assign SizeXM = Missile_sizeX;
 	 assign SizeYM = Missile_sizeY;
+	  
+//FOR MISSILE Alien
+	 int DistXMA[15], DistYMA[15];
+	 int SizeXMA, SizeYMA;
+	 
+	 always_comb begin
+	 for(int j = 0; j < 15; j++) begin
+	 DistXMA[j] = DrawX - MissileAX[j];
+    
+	 DistYMA[j] = DrawY - MissileAY[j];
+	 end	
+	 end
+	 
+	 assign SizeXMA = Missile_sizeX;
+	 assign SizeYMA = Missile_sizeY;
+	 
 
 //FOR COLLISION
 	logic [4:0] alien_on_number;
@@ -160,6 +177,58 @@ always_comb begin
 end
 
 always_comb 
+begin: alien_missile_on_proc
+		   if(DistXMA[0] >=0 && DistXM[0] <= SizeXM && DistYM[0] >=0 && DistYM[0] <= SizeYM)begin 
+            missileA_on = 1'b1; 
+				end
+		   else if(DistXMA[1] >=0 && DistXM[1] <= SizeXM && DistYM[1] >=0 && DistYM[1] <= SizeYM)begin 
+            missileA_on = 1'b1; 
+				end
+			else if(DistXMA[2] >=0 && DistXM[2] <= SizeXM && DistYM[2] >=0 && DistYM[2] <= SizeYM)begin 
+            missileA_on = 1'b1; 
+				end
+			else if(DistXMA[3] >=0 && DistXM[3] <= SizeXM && DistYM[3] >=0 && DistYM[3] <= SizeYM)begin 
+            missileA_on = 1'b1; 
+				end
+			else if(DistXMA[4] >=0 && DistXM[4] <= SizeXM && DistYM[4] >=0 && DistYM[4] <= SizeYM)begin 
+            missileA_on = 1'b1; 
+				end
+			else if(DistXMA[5] >=0 && DistXM[5] <= SizeXM && DistYM[5] >=0 && DistYM[5] <= SizeYM)begin 
+            missileA_on = 1'b1; 
+				end
+			else if(DistXMA[6] >=0 && DistXM[6] <= SizeXM && DistYM[6] >=0 && DistYM[6] <= SizeYM)begin 
+            missileA_on = 1'b1; 
+				end
+			else if(DistXMA[7] >=0 && DistXM[7] <= SizeXM && DistYM[7] >=0 && DistYM[7] <= SizeYM)begin 
+            missileA_on = 1'b1; 
+				end
+			else if(DistXMA[8] >=0 && DistXM[8] <= SizeXM && DistYM[8] >=0 && DistYM[8] <= SizeYM)begin 
+            missileA_on = 1'b1; 
+				end
+			else if(DistXMA[9] >=0 && DistXM[9] <= SizeXM && DistYM[9] >=0 && DistYM[9] <= SizeYM)begin 
+            missileA_on = 1'b1; 
+				end
+			else if(DistXMA[10] >=0 && DistXM[10] <= SizeXM && DistYM[10] >=0 && DistYM[10] <= SizeYM)begin 
+            missileA_on = 1'b1; 
+				end
+			else if(DistXMA[11] >=0 && DistXM[11] <= SizeXM && DistYM[11] >=0 && DistYM[11] <= SizeYM)begin 
+            missileA_on = 1'b1; 
+				end
+			else if(DistXMA[12] >=0 && DistXM[12] <= SizeXM && DistYM[12] >=0 && DistYM[12] <= SizeYM)begin 
+            missileA_on = 1'b1; 
+				end
+			else if(DistXMA[13] >=0 && DistXM[13] <= SizeXM && DistYM[13] >=0 && DistYM[13] <= SizeYM)begin 
+            missileA_on = 1'b1; 
+				end
+			else if(DistXMA[14] >=0 && DistXM[14] <= SizeXM && DistYM[14] >=0 && DistYM[14] <= SizeYM)begin 
+            missileA_on = 1'b1; 
+				end
+			else begin
+				missileA_on = 1'b0;
+				end
+end
+
+always_comb 
 begin: missile_on_proc
 		  if(DistXM>=0 && DistXM <= SizeXM && DistYM>=0 && DistYM <= SizeYM)  //square
             missile_on = 1'b1; 
@@ -200,6 +269,18 @@ if(DrawX > 790 && DrawY > 520)
 	Collision <= 1'b0;
 else if((alien_on == 1'b1) && (missile_on == 1'b1))
 	Collision <= 1'b1;
+end
+
+//for Alien Missile Collision
+always_ff @ (posedge pixel_clk)
+begin: Collision_LogicA 
+if(DrawX > 790 && DrawY > 520)
+	CollisionA[0] <= 1'b0;
+	else if((ship_on == 1'b1) && (missileA_on == 1'b1))
+	CollisionA[0] <= 1'b1;
+	else CollisionA[0]=1'b0;
+//	else if(Missile)
+//	CollisionA <= 1'b0;
 end
 	
 always_ff @ (posedge pixel_clk)
@@ -247,14 +328,20 @@ always_ff @ (posedge pixel_clk)
 			Green = 8'hFF;
 			Blue = 8'h00;
 	  end
+//	   else if (missileA_on == 1'b1)
+//	  begin
+//			Red = 8'hFF;
+//			Green = 8'hFF;
+//			Blue = 8'h00;
+//	  end
 	  else 
 	  begin 
-//			Red = 8'h00; 
-//			Green = 8'h00;
-//			Blue = 8'h7f - DrawX[9:3];
-			Red = backgroundColor[23:16]; 
-			Green = backgroundColor[15:8];
-			Blue = backgroundColor[7:0];
+			Red = 8'h00; 
+			Green = 8'h00;
+			Blue = 8'h7f - DrawX[9:3];
+//			Red = backgroundColor[23:16]; 
+//			Green = backgroundColor[15:8];
+//			Blue = backgroundColor[7:0];
 	  end      
  end
  

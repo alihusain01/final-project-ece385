@@ -266,6 +266,7 @@ set_global_assignment -name SDC_FILE lab6.sdc
 set_global_assignment -name SYSTEMVERILOG_FILE spaceship.sv
 set_global_assignment -name SYSTEMVERILOG_FILE alien.sv
 set_global_assignment -name SYSTEMVERILOG_FILE missile.sv
+set_global_assignment -name SYSTEMVERILOG_FILE missileA.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ROM.sv
 set_global_assignment -name SYSTEMVERILOG_FILE spriteController.sv
 set_global_assignment -name QIP_FILE testUIUCROM.qip

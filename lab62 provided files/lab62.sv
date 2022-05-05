@@ -1,3 +1,4 @@
+
 //-------------------------------------------------------------------------
 //                                                                       --
 //                                                                       --
@@ -64,12 +65,13 @@ logic Reset_h, vssig, blank, sync, VGA_Clk;
 //=======================================================
 //  REG/WIRE declarations
 //=======================================================
-	logic SPI0_CS_N, SPI0_SCLK, SPI0_MISO, SPI0_MOSI, USB_GPX, USB_IRQ, USB_RST, Collision;
+	logic SPI0_CS_N, SPI0_SCLK, SPI0_MISO, SPI0_MOSI, USB_GPX, USB_IRQ, USB_RST, Collision, CollisionA[15];
 	logic [3:0] hex_num_4, hex_num_3, hex_num_1, hex_num_0; //4 bit input hex digits
 	logic [1:0] signs;
 	logic [1:0] hundreds;
 	logic [9:0] drawxsig, drawysig, shipxsig, shipysig, shipsizesigx, shipsizesigy, 
-				missilexsig, missileysig, missilesizesigx, missilesizesigy;
+				missilexsig, missileysig, missilesizesigx, missilesizesigy,
+				missileAxsig [15], missileAysig[15], AlienXMotion;
 	logic [9:0] alienxsig[15], alienysig[15], aliensizesigx[15],aliensizesigy[15];
 	logic [7:0] Red, Blue, Green;
 	logic [7:0] keycode;
@@ -186,7 +188,7 @@ spaceShip spaceship(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .Shi
 //                       output logic [7:0]  Red, Green, Blue );
 
 
-Alien Alien0(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .AlienX(alienxsig[0]), .AlienY(alienysig[0]), .AlienSX(aliensizesigx[0]),.AlienSY(aliensizesigy[0]), .AlienX_Offset(0), .AlienY_Offset(0));
+Alien Alien0(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .AlienX(alienxsig[0]), .AlienY(alienysig[0]), .AlienSX(aliensizesigx[0]),.AlienSY(aliensizesigy[0]), .AlienX_Offset(0), .AlienY_Offset(0), .AlienXMotion(AlienXMotion));
 Alien Alien1(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .AlienX(alienxsig[1]), .AlienY(alienysig[1]), .AlienSX(aliensizesigx[1]),.AlienSY(aliensizesigy[1]), .AlienX_Offset(40), .AlienY_Offset(0));
 Alien Alien2(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .AlienX(alienxsig[2]), .AlienY(alienysig[2]), .AlienSX(aliensizesigx[2]),.AlienSY(aliensizesigy[2]), .AlienX_Offset(80), .AlienY_Offset(0));
 Alien Alien3(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .AlienX(alienxsig[3]), .AlienY(alienysig[3]), .AlienSX(aliensizesigx[3]),.AlienSY(aliensizesigy[3]), .AlienX_Offset(120), .AlienY_Offset(0));
@@ -205,10 +207,43 @@ Alien Alien14(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .AlienX(al
 					
 missile missile(.Reset(Reset_h), .frame_clk(VGA_VS), .keycode(keycode), .Collision(Collision), .ShipX(shipxsig), .ShipY(shipysig), .Ship_sizeX(shipsizesigx), .MissileX(missilexsig), 
 		.MissileY(missileysig), .MissileSX(missilesizesigx), .MissileSY(missilesizesigy));
+		
+missileA missileA0(.Reset(Reset_h), .frame_clk(VGA_VS), .CollisionA(CollisionA[0]),.AlienX_Offset(0) , .AlienXMotion(AlienXMotion), .AlienX(alienxsig[0]), .AlienY(alienysig[0]), .Alien_sizeX(aliensizesigx[0]), .MissileX(missileAxsig[0]), 
+		.MissileY(missileAysig[0]));
+missileA missileA1(.Reset(Reset_h), .frame_clk(VGA_VS), .CollisionA(CollisionA[1]),.AlienX_Offset(40) , .AlienXMotion(AlienXMotion), .AlienX(alienxsig[1]), .AlienY(alienysig[1]), .Alien_sizeX(aliensizesigx[1]), .MissileX(missileAxsig[1]), 
+		.MissileY(missileAysig[1]));
+missileA missileA2(.Reset(Reset_h), .frame_clk(VGA_VS), .CollisionA(CollisionA[2]),.AlienX_Offset(80) , .AlienXMotion(AlienXMotion), .AlienX(alienxsig[2]), .AlienY(alienysig[2]), .Alien_sizeX(aliensizesigx[2]), .MissileX(missileAxsig[2]), 
+		.MissileY(missileAysig[2]));
+missileA missileA3(.Reset(Reset_h), .frame_clk(VGA_VS), .CollisionA(CollisionA[3]),.AlienX_Offset(120) , .AlienXMotion(AlienXMotion), .AlienX(alienxsig[3]), .AlienY(alienysig[3]), .Alien_sizeX(aliensizesigx[3]), .MissileX(missileAxsig[3]), 
+		.MissileY(missileAysig[3]));
+missileA missileA4(.Reset(Reset_h), .frame_clk(VGA_VS), .CollisionA(CollisionA[4]),.AlienX_Offset(160) , .AlienXMotion(AlienXMotion), .AlienX(alienxsig[4]), .AlienY(alienysig[4]), .Alien_sizeX(aliensizesigx[4]), .MissileX(missileAxsig[4]), 
+		.MissileY(missileAysig[4]));
+missileA missileA5(.Reset(Reset_h), .frame_clk(VGA_VS), .CollisionA(CollisionA[5]),.AlienX_Offset(0) , .AlienXMotion(AlienXMotion), .AlienX(alienxsig[5]), .AlienY(alienysig[5]), .Alien_sizeX(aliensizesigx[5]), .MissileX(missileAxsig[5]), 
+		.MissileY(missileAysig[5]));
+missileA missileA6(.Reset(Reset_h), .frame_clk(VGA_VS), .CollisionA(CollisionA[6]),.AlienX_Offset(40) , .AlienXMotion(AlienXMotion), .AlienX(alienxsig[6]), .AlienY(alienysig[6]), .Alien_sizeX(aliensizesigx[6]), .MissileX(missileAxsig[6]), 
+		.MissileY(missileAysig[6]));
+missileA missileA7(.Reset(Reset_h), .frame_clk(VGA_VS), .CollisionA(CollisionA[7]),.AlienX_Offset(80) , .AlienXMotion(AlienXMotion), .AlienX(alienxsig[7]), .AlienY(alienysig[7]), .Alien_sizeX(aliensizesigx[7]), .MissileX(missileAxsig[7]), 
+		.MissileY(missileAysig[7]));
+missileA missileA8(.Reset(Reset_h), .frame_clk(VGA_VS), .CollisionA(CollisionA[8]),.AlienX_Offset(120) , .AlienXMotion(AlienXMotion), .AlienX(alienxsig[8]), .AlienY(alienysig[8]), .Alien_sizeX(aliensizesigx[8]), .MissileX(missileAxsig[8]), 
+		.MissileY(missileAysig[8]));
+missileA missileA9(.Reset(Reset_h), .frame_clk(VGA_VS), .CollisionA(CollisionA[9]),.AlienX_Offset(160) , .AlienXMotion(AlienXMotion), .AlienX(alienxsig[9]), .AlienY(alienysig[9]), .Alien_sizeX(aliensizesigx[9]), .MissileX(missileAxsig[9]), 
+		.MissileY(missileAysig[9]));
+missileA missileA10(.Reset(Reset_h), .frame_clk(VGA_VS), .CollisionA(CollisionA[10]),.AlienX_Offset(0) , .AlienXMotion(AlienXMotion), .AlienX(alienxsig[10]), .AlienY(alienysig[10]), .Alien_sizeX(aliensizesigx[10]), .MissileX(missileAxsig[10]), 
+		.MissileY(missileAysig[10]));
+missileA missileA11(.Reset(Reset_h), .frame_clk(VGA_VS), .CollisionA(CollisionA[11]),.AlienX_Offset(40) , .AlienXMotion(AlienXMotion), .AlienX(alienxsig[11]), .AlienY(alienysig[11]), .Alien_sizeX(aliensizesigx[11]), .MissileX(missileAxsig[11]), 
+		.MissileY(missileAysig[11]));
+missileA missileA12(.Reset(Reset_h), .frame_clk(VGA_VS), .CollisionA(CollisionA[12]),.AlienX_Offset(80) , .AlienXMotion(AlienXMotion), .AlienX(alienxsig[12]), .AlienY(alienysig[12]), .Alien_sizeX(aliensizesigx[12]), .MissileX(missileAxsig[12]), 
+		.MissileY(missileAysig[12]));
+missileA missileA13(.Reset(Reset_h), .frame_clk(VGA_VS), .CollisionA(CollisionA[13]),.AlienX_Offset(120) , .AlienXMotion(AlienXMotion), .AlienX(alienxsig[13]), .AlienY(alienysig[13]), .Alien_sizeX(aliensizesigx[13]), .MissileX(missileAxsig[13]), 
+		.MissileY(missileAysig[13]));
+missileA missileA14(.Reset(Reset_h), .frame_clk(VGA_VS), .CollisionA(CollisionA[14]),.AlienX_Offset(160) , .AlienXMotion(AlienXMotion), .AlienX(alienxsig[14]), .AlienY(alienysig[14]), .Alien_sizeX(aliensizesigx[14]), .MissileX(missileAxsig[14]), 
+		.MissileY(missileAysig[14]));
+
 
 color_mapper color_mapper(.pixel_clk(VGA_Clk), .Reset(Reset_h), .ShipX(shipxsig), .ShipY(shipysig), .AlienX(alienxsig), .AlienY(alienysig), .DrawX(drawxsig), .DrawY(drawysig), 
 					.MissileX(missilexsig), .MissileY(missileysig), .Missile_sizeX(missilesizesigx), .Missile_sizeY(missilesizesigy),
-					.Ship_sizeX(shipsizesigx), .Ship_sizeY(shipsizesigy), .Alien_sizeX(aliensizesigx), .Alien_sizeY(aliensizesigy), .Collision(Collision), .uiucColor(uiuc_Color), .NWColor(NW_Color), .PurdueColor(Purdue_Color), .WiscoColor(Wisco_Color), .backgroundColor(background_Color),
+					.MissileAX(missileAxsig), .MissileAY(missileAysig),
+					.Ship_sizeX(shipsizesigx), .Ship_sizeY(shipsizesigy), .Alien_sizeX(aliensizesigx), .Alien_sizeY(aliensizesigy), .Collision(Collision), .uiucColor(uiuc_Color), .NWColor(NW_Color), .PurdueColor(Purdue_Color), .WiscoColor(Wisco_Color), //.backgroundColor(background_Color),
 					.Red(Red), .Green(Green), .Blue(Blue), .blank(blank));
 					
 ///// ROM Instantations /////////
@@ -233,7 +268,7 @@ logic [3:0] backgroundPalette_Address;
 logic [23:0] background_Color;
 
 spriteController spriteController(.Clk(MAX10_CLK1_50), .drawX(drawxsig), .drawY(drawysig), .ShipX(shipxsig), .ShipY(shipysig), .AlienX(alienxsig), .AlienY(alienysig), .Ship_Address(uiucRom_Address), 
-							.NWRom_Address(NWRom_Address), .PurdueRom_Address(PurdueRom_Address), .WiscoRom_Address(WiscoRom_Address), .backgroundRom_Address(backgroundRom_Address));
+							.NWRom_Address(NWRom_Address), .PurdueRom_Address(PurdueRom_Address), .WiscoRom_Address(WiscoRom_Address)); //.backgroundRom_Address(backgroundRom_Address));
 
 uiucROM uiucROM(.read_address(uiucRom_Address), .Clk(MAX10_CLK1_50), .data_Out(uiucPalette_Address));
 uiucPalette uiucPalette(.read_address(uiucPalette_Address), .Clk(MAX10_CLK1_50), .data_Out(uiuc_Color));
@@ -247,8 +282,8 @@ PurduePalette PurduePalette(.read_address(PurduePalette_Address), .Clk(MAX10_CLK
 WiscoROM WiscoROM(.read_address(WiscoRom_Address), .Clk(MAX10_CLK1_50), .data_Out(WiscoPalette_Address));
 WiscoPalette WiscoPalette(.read_address(WiscoPalette_Address), .Clk(MAX10_CLK1_50), .data_Out(Wisco_Color));
 
-backgroundROM backgroundROM(.read_address(backgroundRom_Address), .Clk(MAX10_CLK1_50), .data_Out(backgroundPalette_Address));
-backgroundPalette backgroundPalette(.read_address(backgroundPalette_Address), .Clk(MAX10_CLK1_50), .data_Out(background_Color));
+//backgroundROM backgroundROM(.read_address(backgroundRom_Address), .Clk(MAX10_CLK1_50), .data_Out(backgroundPalette_Address));
+//backgroundPalette backgroundPalette(.read_address(backgroundPalette_Address), .Clk(MAX10_CLK1_50), .data_Out(background_Color));
 
 
 endmodule

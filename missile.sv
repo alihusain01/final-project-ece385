@@ -16,7 +16,7 @@
 module  missile ( input Reset, frame_clk, Collision,
 					input [7:0] keycode,
 					input [9:0] ShipX, ShipY, Ship_sizeX,
-               output [9:0]  MissileX, MissileY, MissileSX, MissileSY);
+               output logic [9:0]  MissileX, MissileY, MissileSX, MissileSY);
     
     logic [9:0] Missile_X_Pos, Missile_X_Motion, Missile_Y_Pos, Missile_Y_Motion, Missile_SizeX, Missile_SizeY;
 	 

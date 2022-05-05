@@ -16,7 +16,8 @@
 module  Alien ( input Reset, frame_clk,
 					input [7:0] keycode,
 					input logic [9:0] AlienX_Offset, AlienY_Offset,
-               output [9:0]  AlienX, AlienY, AlienSX, AlienSY
+               output logic [9:0]  AlienX, AlienY, AlienSX, AlienSY,
+					output logic [9:0] AlienXMotion
 					);
     
     logic [9:0] Alien_X_Pos, Alien_X_Motion, Alien_Y_Pos, Alien_Y_Motion, Alien_SizeX, Alien_SizeY;
@@ -126,5 +127,6 @@ module  Alien ( input Reset, frame_clk,
    
     assign AlienSX = Alien_SizeX;
     assign AlienSY = Alien_SizeY;
+	 assign AlienXMotion = Alien_X_Motion;
 	 //assign AlienDestroyed=Alien_Destroyed;
 endmodule
