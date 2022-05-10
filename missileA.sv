@@ -14,8 +14,10 @@
 
 
 module  missileA ( input Reset, frame_clk, CollisionA, 
+						input [7:0] keycode, 
 					input [9:0] AlienX, AlienY, Alien_sizeX, AlienXMotion,
-					input logic [9:0] AlienX_Offset,
+					input logic [9:0] AlienX_Offset, AlienY_Offset,
+					input  randOffset,
                output logic [9:0]  MissileX, MissileY);
     
     logic [9:0] Missile_X_Pos, Missile_X_Motion, Missile_Y_Pos, Missile_Y_Motion, Missile_SizeX, Missile_SizeY;
@@ -28,20 +30,43 @@ module  missileA ( input Reset, frame_clk, CollisionA,
     parameter [9:0] Missile_Y_Max=479;     // Bottommost point on the Y axis
     parameter [9:0] Missile_X_Step=3;      // Step size on the X axis
     parameter [9:0] Missile_Y_Step=4;      // Step size on the Y axis
+	 
+//	 reg [3:0] randomNumber;
+//	 wire feedback;
 
     assign Missile_SizeX = 4;  // assigns the value 4 as a 10-digit binary number, ie "0000000100"
 	 assign Missile_SizeY = 6;
 	 
 	 always_comb begin
 	 Missile_X_On_Alien = AlienX + (Alien_sizeX/2);
-	 Missile_Y_On_Alien = AlienY + 10;
+	 Missile_Y_On_Alien = AlienY + 7;
 	 Missile_X_Min = AlienX_Offset + (Alien_sizeX/2); 
 	 Missile_X_Max = 639 -160 + AlienX_Offset+ Missile_SizeX-(Alien_sizeX/2);
 	 end
    
-    always_ff @ (posedge Reset or posedge frame_clk )
+	
+	//random number generation
+//	assign feedback = ~(randomNumber[3] ^ randomNumber[2]);
+//	
+//	 always_ff @ (posedge Reset or posedge frame_clk )
+//	 begin
+//	 if(Reset)
+//	 randomNumber=4'b0;
+//	 else
+//	 randomNumber={randomNumber[2:0],feedback};
+//	 end
+
+	 logic start;
+	 
+	 always_comb begin
+	 if(keycode == 8'h2C) start = 1'b1;
+	 else start = 1'b0;
+	 end
+	
+    always_ff @ (posedge Reset or posedge frame_clk or posedge start)
     begin: Move_Missile
-	 if (Reset)  // Asynchronous Reset
+	
+	 if (Reset || start)  // Asynchronous Reset
         begin 
             Missile_Y_Motion <= 10'd0; //Missile_Y_Step;
 				Missile_X_Motion <= 10'd1; //Missile_X_Step;
@@ -72,9 +97,14 @@ module  missileA ( input Reset, frame_clk, CollisionA,
 						Missile_Y_Pos += 25;
 					  Missile_X_Pos += 1;
 					  Missile_X_Motion <= 1;
+					  
 					  end
 					 
-					  
+				else if (randOffset==1'b1)
+					begin 
+					Missile_Y_Motion <= 4;
+					Missile_X_Motion <= 0;
+					end
 				 else begin
 					  Missile_Y_Motion <= Missile_Y_Motion;  // Missile is somewhere in the middle, don't bounce, just keep moving
 						Missile_X_Motion<= Missile_X_Motion;

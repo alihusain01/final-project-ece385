@@ -31,9 +31,16 @@ module  spaceShip ( input Reset, frame_clk,
     assign Ship_SizeX = 25;  // assigns the value 4 as a 10-digit binary number, ie "0000000100"
    assign Ship_SizeY = 25;
 	
-    always_ff @ (posedge Reset or posedge frame_clk )
+	 logic start;
+	 
+	 always_comb begin
+	 if(keycode == 8'h2C) start = 1'b1;
+	 else start = 1'b0;
+	 end
+	
+    always_ff @ (posedge Reset or posedge frame_clk or posedge start)
     begin: Move_Ship
-        if (Reset)  // Asynchronous Reset
+        if (Reset || start)  // Asynchronous Reset
         begin 
             Ship_Y_Motion <= 10'd0; //Ship_Y_Step;
 				Ship_X_Motion <= 10'd0; //Ship_X_Step;

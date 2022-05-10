@@ -1,7 +1,6 @@
 module spriteController(input Clk, input [9:0] drawX, drawY, ShipX, ShipY, 
 								input [9:0] AlienX [15], AlienY[15], 
-								output [9:0] Ship_Address, NWRom_Address, PurdueRom_Address, WiscoRom_Address, 
-								output [18:0] backgroundRom_Address
+								output [9:0] Ship_Address, NWRom_Address, PurdueRom_Address, WiscoRom_Address
 );
 
 // SHIP/UIUC Controller 
@@ -13,9 +12,9 @@ int DistX, DistY, SizeX, SizeY;
 	 SizeY = 25;
 	 end
 	 
-always_comb begin
-backgroundRom_Address = (drawY * 640) + drawX;
-end	 
+//always_comb begin
+//backgroundRom_Address = (drawY * 640) + drawX;
+//end	 
 
 always_comb begin
 if(DistX >= 0 && DistX < SizeX && DistY >= 0 && DistY < SizeY)
@@ -26,10 +25,17 @@ end
 
 //Alien Controller
  int DistXA[15], DistYA[15];
- int SizeXA, SizeYA;
+ int SizeXA, SizeYA, SizeXTitle, SizeYTitle;
  
  assign SizeXA = 25;
  assign SizeYA = 20;
+ 
+ assign SizeXTitle = 398;
+ assign SizeYTitle = 91;
+ 
+// always_comb begin
+// TitleRom_Address = (drawY - 200) * SizeXTitle + (drawX - 100);
+// end
  
  always_comb
  begin

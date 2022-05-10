@@ -38,12 +38,19 @@ module  Alien ( input Reset, frame_clk,
 	 Alien_X_Min= AlienX_Offset; 
 	 Alien_X_Max= 639 - 160 + AlienX_Offset;
 	 end
+	 
+	 logic start;
+	 
+	 always_comb begin
+	 if(keycode == 8'h2C) start = 1'b1;
+	 else start = 1'b0;
+	 end
 
     assign Alien_SizeX = 25;  // assigns the value 4 as a 10-digit binary number, ie "0000000100"
 	 assign Alien_SizeY= 20;
-    always_ff @ (posedge Reset or posedge frame_clk )
+    always_ff @ (posedge Reset or posedge frame_clk or posedge start)
     begin: Move_Alien
-        if (Reset)  // Asynchronous Reset
+        if (Reset || start)  // Asynchronous Reset
         begin 
             Alien_Y_Motion <= 10'd0; //Alien_Y_Step;
 				Alien_X_Motion <= 1'b1; //Alien_X_Step;

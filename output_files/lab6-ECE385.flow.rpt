@@ -1,5 +1,5 @@
 Flow report for lab6-ECE385
-Wed May 04 23:56:40 2022
+Sat May 07 00:42:08 2022
 Quartus Prime Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
 
 
@@ -40,17 +40,17 @@ refer to the applicable agreement for further details.
 +----------------------------------------------------------------------------------+
 ; Flow Summary                                                                     ;
 +------------------------------------+---------------------------------------------+
-; Flow Status                        ; Successful - Wed May 04 23:56:40 2022       ;
+; Flow Status                        ; Successful - Sat May 07 00:42:08 2022       ;
 ; Quartus Prime Version              ; 18.1.0 Build 625 09/12/2018 SJ Lite Edition ;
 ; Revision Name                      ; lab6-ECE385                                 ;
 ; Top-level Entity Name              ; lab62                                       ;
 ; Family                             ; MAX 10                                      ;
 ; Device                             ; 10M50DAF484C7G                              ;
 ; Timing Models                      ; Final                                       ;
-; Total logic elements               ; 6,993 / 49,760 ( 14 % )                     ;
-;     Total combinational functions  ; 6,179 / 49,760 ( 12 % )                     ;
-;     Dedicated logic registers      ; 2,874 / 49,760 ( 6 % )                      ;
-; Total registers                    ; 2943                                        ;
+; Total logic elements               ; 10,314 / 49,760 ( 21 % )                    ;
+;     Total combinational functions  ; 9,502 / 49,760 ( 19 % )                     ;
+;     Dedicated logic registers      ; 3,211 / 49,760 ( 6 % )                      ;
+; Total registers                    ; 3280                                        ;
 ; Total pins                         ; 141 / 360 ( 39 % )                          ;
 ; Total virtual pins                 ; 0                                           ;
 ; Total memory bits                  ; 17,767 / 1,677,312 ( 1 % )                  ;
@@ -66,7 +66,7 @@ refer to the applicable agreement for further details.
 +-------------------+---------------------+
 ; Option            ; Setting             ;
 +-------------------+---------------------+
-; Start date & time ; 05/04/2022 23:54:06 ;
+; Start date & time ; 05/07/2022 00:39:13 ;
 ; Main task         ; Compilation         ;
 ; Revision Name     ; lab6-ECE385         ;
 +-------------------+---------------------+
@@ -77,7 +77,7 @@ refer to the applicable agreement for further details.
 +-------------------------------------+-------------------------------------------------------------+---------------+-------------------+----------------+
 ; Assignment Name                     ; Value                                                       ; Default Value ; Entity Name       ; Section Id     ;
 +-------------------------------------+-------------------------------------------------------------+---------------+-------------------+----------------+
-; COMPILER_SIGNATURE_ID               ; 174508013120537.165172644523848                             ; --            ; --                ; --             ;
+; COMPILER_SIGNATURE_ID               ; 174508013120537.165190195213788                             ; --            ; --                ; --             ;
 ; EDA_OUTPUT_DATA_FORMAT              ; Systemverilog Hdl                                           ; --            ; --                ; eda_simulation ;
 ; EDA_SIMULATION_TOOL                 ; ModelSim-Altera (SystemVerilog)                             ; <None>        ; --                ; --             ;
 ; EDA_TIME_SCALE                      ; 1 ps                                                        ; --            ; --                ; eda_simulation ;
@@ -115,13 +115,13 @@ refer to the applicable agreement for further details.
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 ; Module Name          ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Synthesis ; 00:01:02     ; 1.0                     ; 5010 MB             ; 00:01:27                           ;
-; Fitter               ; 00:00:53     ; 1.5                     ; 5806 MB             ; 00:01:38                           ;
-; Assembler            ; 00:00:04     ; 1.0                     ; 4707 MB             ; 00:00:04                           ;
-; Power Analyzer       ; 00:00:10     ; 1.9                     ; 4929 MB             ; 00:00:18                           ;
-; Timing Analyzer      ; 00:00:11     ; 2.1                     ; 4904 MB             ; 00:00:19                           ;
-; EDA Netlist Writer   ; 00:00:04     ; 1.0                     ; 4750 MB             ; 00:00:04                           ;
-; Total                ; 00:02:24     ; --                      ; --                  ; 00:03:50                           ;
+; Analysis & Synthesis ; 00:01:02     ; 1.0                     ; 5019 MB             ; 00:01:32                           ;
+; Fitter               ; 00:01:08     ; 1.5                     ; 5843 MB             ; 00:02:14                           ;
+; Assembler            ; 00:00:04     ; 1.0                     ; 4719 MB             ; 00:00:04                           ;
+; Power Analyzer       ; 00:00:13     ; 2.1                     ; 4946 MB             ; 00:00:25                           ;
+; Timing Analyzer      ; 00:00:12     ; 2.4                     ; 4925 MB             ; 00:00:25                           ;
+; EDA Netlist Writer   ; 00:00:04     ; 1.0                     ; 4768 MB             ; 00:00:05                           ;
+; Total                ; 00:02:43     ; --                      ; --                  ; 00:04:45                           ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 

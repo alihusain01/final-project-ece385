@@ -195,6 +195,58 @@ always_ff @ (posedge Clk) begin
 end
 
 endmodule
+
+////////////////////////////TITLE///////////////////
+
+module TitleROM
+(
+		input [3:0] data_In,
+		input [16:0] write_address, read_address,
+		input we, Clk,
+
+		output logic [3:0] data_Out
+);
+
+logic [3:0] mem [0:36500];
+
+initial 
+begin
+	$readmemh("spriteBytes/title.txt", mem);
+end
+
+always_ff @ (posedge Clk) begin
+		if (we)
+		mem[write_address] <= data_In;
+	data_Out <= mem[read_address];
+end
+
+endmodule
+
+module TitlePalette
+(
+		input [23:0] data_In,
+		input [3:0] write_address, read_address,
+		input we, Clk,
+
+		output logic [23:0] data_Out
+);
+
+logic [23:0] mem [0:3];
+
+
+initial 
+begin
+	$readmemh("spriteBytes/titlePalette.txt", mem);
+end
+
+always_ff @ (posedge Clk) begin
+	if (we)
+		mem[write_address] <= data_In;
+	data_Out <= mem[read_address];
+end
+
+endmodule
+
 ////////////////////////////////////////////////////////////////
 //background
 //module backgroundROM

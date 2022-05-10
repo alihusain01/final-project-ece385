@@ -15,6 +15,7 @@
 
 module  color_mapper ( input pixel_clk, Reset, blank,
 								input        [9:0] ShipX, ShipY, DrawX, DrawY, Ship_sizeX, Ship_sizeY, 
+								input [7:0] keycode,
 							 input [9:0] AlienX[15], AlienY[15], Alien_sizeX[15],Alien_sizeY[15],
 							 input [9:0] MissileX, MissileY, Missile_sizeX, Missile_sizeY,
 							 MissileAX[15], MissileAY[15],
@@ -22,8 +23,10 @@ module  color_mapper ( input pixel_clk, Reset, blank,
                        output logic [7:0]  Red, Green, Blue,
 								output logic Collision, CollisionA[15]);
     
-logic ship_on,alien_on, missile_on, alien_on_color[3], missileA_on;
-
+logic ship_on,alien_on, missile_on, alien_on_color[3], missileA_on1, missileA_on2;
+logic start=1'b0;
+logic win=1'b0;
+logic lose=1'b0;
 
 	 
 //FOR SHIP	  
@@ -63,14 +66,15 @@ logic ship_on,alien_on, missile_on, alien_on_color[3], missileA_on;
 	 always_comb begin
 	 for(int j = 0; j < 15; j++) begin
 	 DistXMA[j] = DrawX - MissileAX[j];
-    
 	 DistYMA[j] = DrawY - MissileAY[j];
 	 end	
 	 end
 	 
 	 assign SizeXMA = Missile_sizeX;
 	 assign SizeYMA = Missile_sizeY;
-	 
+	logic [4:0] missileA_on_number1;
+	logic [4:0] missileA_on_number2;	 
+	
 
 //FOR COLLISION
 	logic [4:0] alien_on_number;
@@ -177,55 +181,92 @@ always_comb begin
 end
 
 always_comb 
-begin: alien_missile_on_proc
-		   if(DistXMA[0] >=0 && DistXM[0] <= SizeXM && DistYM[0] >=0 && DistYM[0] <= SizeYM)begin 
-            missileA_on = 1'b1; 
+begin: alien_missile_on_proc1
+				missileA_on1 = 1'b0;
+				missileA_on_number1=15;
+				
+		   if(DistXMA[0] >=0 && DistXMA[0] < SizeXMA && DistYMA[0] >=0 && DistYMA[0] < SizeYMA && alienLife[0]==1'b1)
+			begin 	 
+            missileA_on1 = 1'b1; 
+				missileA_on_number1=0;
 				end
-		   else if(DistXMA[1] >=0 && DistXM[1] <= SizeXM && DistYM[1] >=0 && DistYM[1] <= SizeYM)begin 
-            missileA_on = 1'b1; 
+		    if(DistXMA[1] >=0 && DistXMA[1] < SizeXMA && DistYMA[1] >=0 && DistYMA[1] < SizeYMA && alienLife[1]==1'b1)
+			begin 
+            missileA_on1 = 1'b1; 
+				missileA_on_number1=1;
 				end
-			else if(DistXMA[2] >=0 && DistXM[2] <= SizeXM && DistYM[2] >=0 && DistYM[2] <= SizeYM)begin 
-            missileA_on = 1'b1; 
+			 if(DistXMA[2] >=0 && DistXMA[2] < SizeXMA && DistYMA[2] >=0 && DistYMA[2] < SizeYMA && alienLife[2]==1'b1)
+			begin 
+            missileA_on1 = 1'b1; 
+				missileA_on_number1=2;
 				end
-			else if(DistXMA[3] >=0 && DistXM[3] <= SizeXM && DistYM[3] >=0 && DistYM[3] <= SizeYM)begin 
-            missileA_on = 1'b1; 
+			 if(DistXMA[3] >=0 && DistXMA[3] < SizeXMA && DistYMA[3] >=0 && DistYMA[3] < SizeYMA && alienLife[3]==1'b1)
+			begin 
+            missileA_on1 = 1'b1; 
+				missileA_on_number1=3;
 				end
-			else if(DistXMA[4] >=0 && DistXM[4] <= SizeXM && DistYM[4] >=0 && DistYM[4] <= SizeYM)begin 
-            missileA_on = 1'b1; 
+			 if(DistXMA[4] >=0 && DistXMA[4] < SizeXMA && DistYMA[4] >=0 && DistYMA[4] < SizeYMA && alienLife[4]==1'b1)
+			begin 
+            missileA_on1 = 1'b1; 
+			missileA_on_number1=4;
 				end
-			else if(DistXMA[5] >=0 && DistXM[5] <= SizeXM && DistYM[5] >=0 && DistYM[5] <= SizeYM)begin 
-            missileA_on = 1'b1; 
+			 if(DistXMA[5] >=0 && DistXMA[5] < SizeXMA && DistYMA[5] >=0 && DistYMA[5] < SizeYMA && alienLife[5]==1'b1)
+			begin 
+            missileA_on1 = 1'b1;
+				missileA_on_number1=5;
 				end
-			else if(DistXMA[6] >=0 && DistXM[6] <= SizeXM && DistYM[6] >=0 && DistYM[6] <= SizeYM)begin 
-            missileA_on = 1'b1; 
+			 if(DistXMA[6] >=0 && DistXMA[6] < SizeXMA && DistYMA[6] >=0 && DistYMA[6] < SizeYMA && alienLife[6]==1'b1)
+			begin 
+            missileA_on1 = 1'b1; 
+				missileA_on_number1=6;
 				end
-			else if(DistXMA[7] >=0 && DistXM[7] <= SizeXM && DistYM[7] >=0 && DistYM[7] <= SizeYM)begin 
-            missileA_on = 1'b1; 
+			 if(DistXMA[7] >=0 && DistXMA[7] < SizeXMA && DistYMA[7] >=0 && DistYMA[7] < SizeYMA && alienLife[7]==1'b1)
+			begin 
+            missileA_on1 = 1'b1; 
+				missileA_on_number1=7;
 				end
-			else if(DistXMA[8] >=0 && DistXM[8] <= SizeXM && DistYM[8] >=0 && DistYM[8] <= SizeYM)begin 
-            missileA_on = 1'b1; 
+	end
+	
+always_comb 
+begin: alien_missile_on_proc2
+				missileA_on2 = 1'b0;
+				missileA_on_number2=15;
+			 if(DistXMA[8] >=0 && DistXMA[8] < SizeXMA && DistYMA[8] >=0 && DistYMA[8] < SizeYMA && alienLife[8]==1'b1)
+			begin 
+            missileA_on2 = 1'b1; 
+				missileA_on_number2=8;
 				end
-			else if(DistXMA[9] >=0 && DistXM[9] <= SizeXM && DistYM[9] >=0 && DistYM[9] <= SizeYM)begin 
-            missileA_on = 1'b1; 
+			 if(DistXMA[9] >=0 && DistXMA[9] < SizeXMA && DistYMA[9] >=0 && DistYMA[9] < SizeYMA && alienLife[9]==1'b1)
+			begin 
+            missileA_on2 = 1'b1; 
+				missileA_on_number2=9;
 				end
-			else if(DistXMA[10] >=0 && DistXM[10] <= SizeXM && DistYM[10] >=0 && DistYM[10] <= SizeYM)begin 
-            missileA_on = 1'b1; 
+			 if(DistXMA[10] >=0 && DistXMA[10] < SizeXMA && DistYMA[10] >=0 && DistYMA[10] < SizeYMA && alienLife[10]==1'b1)
+			begin 
+            missileA_on2 = 1'b1; 
+				missileA_on_number2=10;
 				end
-			else if(DistXMA[11] >=0 && DistXM[11] <= SizeXM && DistYM[11] >=0 && DistYM[11] <= SizeYM)begin 
-            missileA_on = 1'b1; 
+			 if(DistXMA[11] >=0 && DistXMA[11] < SizeXMA && DistYMA[11] >=0 && DistYMA[11] < SizeYMA && alienLife[11]==1'b1)
+			begin 
+            missileA_on2 = 1'b1; 
+				missileA_on_number2=11;
 				end
-			else if(DistXMA[12] >=0 && DistXM[12] <= SizeXM && DistYM[12] >=0 && DistYM[12] <= SizeYM)begin 
-            missileA_on = 1'b1; 
+			 if(DistXMA[12] >=0 && DistXMA[12] < SizeXMA && DistYMA[12] >=0 && DistYMA[12] < SizeYMA && alienLife[12]==1'b1)
+			begin 
+            missileA_on2 = 1'b1; 
+				missileA_on_number2=12;
 				end
-			else if(DistXMA[13] >=0 && DistXM[13] <= SizeXM && DistYM[13] >=0 && DistYM[13] <= SizeYM)begin 
-            missileA_on = 1'b1; 
+			 if(DistXMA[13] >=0 && DistXMA[13] < SizeXMA && DistYMA[13] >=0 && DistYMA[13] < SizeYMA && alienLife[13]==1'b1)
+			begin 
+            missileA_on2 = 1'b1; 
+				missileA_on_number2=13;
 				end
-			else if(DistXMA[14] >=0 && DistXM[14] <= SizeXM && DistYM[14] >=0 && DistYM[14] <= SizeYM)begin 
-            missileA_on = 1'b1; 
+			 if(DistXMA[14] >=0 && DistXMA[14] < SizeXMA && DistYMA[14] >=0 && DistYMA[14] < SizeYMA && alienLife[14]==1'b1)
+			begin 
+            missileA_on2 = 1'b1; 
+				missileA_on_number2=14;
 				end
-			else begin
-				missileA_on = 1'b0;
-				end
+
 end
 
 always_comb 
@@ -275,31 +316,191 @@ end
 always_ff @ (posedge pixel_clk)
 begin: Collision_LogicA 
 if(DrawX > 790 && DrawY > 520)
+	begin
 	CollisionA[0] <= 1'b0;
-	else if((ship_on == 1'b1) && (missileA_on == 1'b1))
-	CollisionA[0] <= 1'b1;
-	else CollisionA[0]=1'b0;
-//	else if(Missile)
-//	CollisionA <= 1'b0;
+	CollisionA[1] <= 1'b0;
+	CollisionA[2] <= 1'b0;
+	CollisionA[3] <= 1'b0;
+	CollisionA[4] <= 1'b0;
+	CollisionA[5] <= 1'b0;
+	CollisionA[6] <= 1'b0;
+	CollisionA[7] <= 1'b0;
+	CollisionA[8] <= 1'b0;
+	CollisionA[9] <= 1'b0;
+	CollisionA[10] <= 1'b0;
+	CollisionA[11] <= 1'b0;
+	CollisionA[12] <= 1'b0;
+	CollisionA[13] <= 1'b0;
+	CollisionA[14] <= 1'b0;
+	end
+	else if((ship_on == 1'b1) && ((missileA_on1 == 1'b1) || (missileA_on2 == 1'b1)))
+	begin
+		if(missileA_on1==1'b1) begin
+		CollisionA[missileA_on_number1] <= 1'b1;
+		end
+		else begin
+		CollisionA[missileA_on_number2] <= 1'b1;
+		end
+	end
+	//else CollisionA[missileA_on_number]=1'b0;
 end
 	
+	
+//for start screen
+always_ff @ (posedge Reset or posedge pixel_clk)
+begin
+	if(Reset)
+	start<=1'b0;
+	else begin
+	case (keycode)
+	8'h2C: begin
+		start<=1'b1;
+		end
+	default: begin
+		start<=start;
+	end
+	endcase
+end
+end	
+
+//for end screen
+always_comb
+begin
+	if(alienLife[0]==1'b0 && alienLife[1]==1'b0 && alienLife[2]==1'b0 &&alienLife[3]==1'b0 &&alienLife[4]==1'b0 &&alienLife[5]==1'b0 &&alienLife[6]==1'b0 &&alienLife[7]==1'b0 &&
+   alienLife[8]==1'b0 &&alienLife[9]==1'b0 &&alienLife[10]==1'b0 &&alienLife[11]==1'b0 &&alienLife[12]==1'b0 &&alienLife[13]==1'b0 &&alienLife[14]==1'b0)	
+		begin
+		win=1'b1;
+		//lose=1'b0;
+		end
+		
+//	else if(CollisionA[0]==1'b1)
+//	begin
+//		lose=1'b1;
+//		win = 1'b0;
+//		end
+//	else if(CollisionA[1]==1'b1)
+//	begin
+//		lose=1'b1;
+//		win = 1'b0;
+//		end
+//	else if(CollisionA[2]==1'b1)
+//	begin
+//		lose=1'b1;
+//		win = 1'b0;
+//		end
+//	else if(CollisionA[3]==1'b1)
+//	begin
+//		lose=1'b1;
+//		win = 1'b0;
+//		end
+//	else if(CollisionA[4]==1'b1)
+//	begin
+//		lose=1'b1;
+//		win = 1'b0;
+//		end
+//	else if(CollisionA[5]==1'b1)
+//	begin
+//		lose=1'b1;
+//		win = 1'b0;
+//		end
+//	else if(CollisionA[6]==1'b1)
+//	begin
+//		lose=1'b1;
+//		win = 1'b0;
+//		end
+//	else if(CollisionA[7]==1'b1)
+//	begin
+//		lose=1'b1;
+//		win = 1'b0;
+//		end
+//	else if(CollisionA[8]==1'b1)
+//	begin
+//		lose=1'b1;
+//		win = 1'b0;
+//		end
+//	else if(CollisionA[9]==1'b1)
+//	begin
+//		lose=1'b1;
+//		win = 1'b0;
+//		end
+//	else if(CollisionA[10]==1'b1)
+//	begin
+//		lose=1'b1;
+//		win = 1'b0;
+//		end
+//	else if(CollisionA[11]==1'b1)
+//	begin
+//		lose=1'b1;
+//		win = 1'b0;
+//		end
+//	else if(CollisionA[12]==1'b1)
+//	begin
+//		lose=1'b1;
+//		win = 1'b0;
+//		end
+//	else if(CollisionA[13]==1'b1)
+//	begin
+//		lose=1'b1;
+//		win = 1'b0;
+//		end
+//	else if(CollisionA[14]==1'b1)
+//	begin
+//		lose=1'b1;
+//		win = 1'b0;
+//		end
+	else begin
+	win = 1'b0;
+	//lose = 1'b0;
+	end	
+end
+
+logic onTitle;
+
+always_comb begin
+if (DrawX >= 100 && DrawX < 498 && DrawY >= 200 && DrawY < 291) onTitle = 1'b1;
+else onTitle = 1'b0;
+end	
+
 always_ff @ (posedge pixel_clk)
  begin:RGB_Display
-//		if(blank==1'b0) begin
-//		Red = 8'h00;
-//		Green = 8'h00;
-//		Blue = 8'h00;
-//		end else 
-//		begin
-	  if ((ship_on == 1'b1) && (uiucColor[23:20] != 4'hF)) 
-	  begin 
+		if(blank==1'b0) begin
+		Red = 8'h00;
+		Green = 8'h00;
+		Blue = 8'h00;
+		end  
+
+		else if((start==1'b0)) //&& (onTitle == 1'b1) && (TitleColor[23:20] != 4'hF))
+		begin
+//			Red = TitleColor[23:16];
+//			Green = TitleColor[15:8];
+//			Blue = TitleColor[7:0];
+			Red = 8'h00;
+			Green = 8'h00;
+			Blue = 8'h4f;
+		end
+		
+		else if(win==1'b1)
+		begin
+			Red = 8'h00;
+			Green = 8'hff;
+			Blue = 8'h00;
+		end
+		
+		else if(lose==1'b1)
+		begin
+			Red = 8'hff;
+			Green = 8'h00;
+			Blue = 8'h00;
+		end
+		
+			else if ((ship_on == 1'b1) && (uiucColor[23:20] != 4'hF)) begin 
 //     		Red = 8'hff;
 //			Green = 8'h55;
 //			Blue = 8'h00;
-		Red = uiucColor[23:16];
-		Green = uiucColor[15:8];
-		Blue = uiucColor[7:0];
-	  end  
+			Red = uiucColor[23:16];
+			Green = uiucColor[15:8];
+			Blue = uiucColor[7:0];
+			end  
 	  //else if ((alien_on == 1'b1))  
 			else if((alien_on == 1'b1) && (alien_on_color[0] == 1'b1) && (NWColor[23:20] != 4'hF)) begin // green
 //			Red = 8'h00;
@@ -307,33 +508,32 @@ always_ff @ (posedge pixel_clk)
 //			Blue = 8'h00; end
 			Red = NWColor[23:16];
 			Green = NWColor[15:8];
-			Blue = NWColor[7:0]; end
-			
+			Blue = NWColor[7:0]; 
+			end
 			else if((alien_on == 1'b1) && (alien_on_color[1] == 1'b1) && (PurdueColor[23:20] != 4'hF)) begin //pink maybe
 //			Red = 8'h02;
 //			Green = 8'h23;
 //			Blue = 8'h20; end
 			Red = PurdueColor[23:16];
 			Green = PurdueColor[15:8];
-			Blue = PurdueColor[7:0]; end
+			Blue = PurdueColor[7:0]; 
+			end
 			else if ((alien_on == 1'b1) && (alien_on_color[2] == 1'b1) && (WiscoColor[23:20] != 4'hF)) begin
 			//red
 			Red = WiscoColor[23:16];
 			Green = WiscoColor[15:8];
 			Blue = WiscoColor[7:0]; 
 			end
-	  else if (missile_on == 1'b1)
-	  begin
+			else if (missile_on == 1'b1)begin
 			Red = 8'hFF;
 			Green = 8'hFF;
 			Blue = 8'h00;
-	  end
-//	   else if (missileA_on == 1'b1)
-//	  begin
-//			Red = 8'hFF;
-//			Green = 8'hFF;
-//			Blue = 8'h00;
-//	  end
+			end
+			else if ((missileA_on1 == 1'b1||missileA_on2 == 1'b1)) begin
+			Red = 8'hFF;
+			Green = 8'hFF;
+			Blue = 8'h00;
+			end
 	  else 
 	  begin 
 			Red = 8'h00; 

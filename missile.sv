@@ -38,10 +38,17 @@ module  missile ( input Reset, frame_clk, Collision,
 	 Missile_X_Min = Ship_sizeX/2;
 	 Missile_X_Max = 639 - (Ship_sizeX/2);
 	 end
+	 
+	 logic start;
+	 
+	 always_comb begin
+	 if(keycode == 8'h2C) start = 1'b1;
+	 else start = 1'b0;
+	 end
    
-    always_ff @ (posedge Reset or posedge frame_clk )
+    always_ff @ (posedge Reset or posedge frame_clk or posedge start)
     begin: Move_Missile
-        if (Reset)  // Asynchronous Reset
+        if (Reset || start)  // Asynchronous Reset
         begin 
             Missile_Y_Motion <= 10'd0; //Missile_Y_Step;
 				Missile_X_Motion <= 10'd0; //Missile_X_Step;
